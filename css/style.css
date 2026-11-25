@@ -965,3 +965,14 @@ body { overflow-x: hidden; }
   :root { --max: 1320px; }
   html { font-size: 18px; }
 }
+
+/* 홈 '포함 장비' 세부 장비 요약 (js/equipment-list.js) */
+.eq-summary { margin-top: 1.25rem; }
+.eq-summary h3 { margin: 0 0 0.6rem; }
+.eq-summary h3 small { font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-left: 0.3rem; }
+.eq-summary dl { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1.5rem; }
+.eq-summary dl > div { display: flex; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid var(--border); min-width: 0; }
+.eq-summary dt { flex: none; width: 6.5rem; font-weight: 800; color: var(--text); }
+.eq-summary dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.eq-summary-link { display: inline-block; margin-top: 0.8rem; font-weight: 700; }
+@media (max-width: 640px) { .eq-summary dl { grid-template-columns: minmax(0, 1fr); } }
