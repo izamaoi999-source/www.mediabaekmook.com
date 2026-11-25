@@ -1,0 +1,12 @@
+# Cloudflare Pages 프로젝트 설정 (wrangler pages deploy / pages dev 용)
+name = "mediabaekmook"
+compatibility_date = "2026-11-01"
+# 정적 파일은 scripts/build.mjs 가 만드는 dist/ 만 올립니다.
+# (루트 '.'를 그대로 올리면 functions/ 소스, schema.sql, wrangler.toml, node_modules 등이 공개됩니다.)
+# functions/ 폴더는 이 파일이 있는 루트에서 wrangler가 자동으로 빌드합니다.
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mediabaekmook-board"
+database_id = "95db4569-b762-4879-812f-d284e1c0bea0"
