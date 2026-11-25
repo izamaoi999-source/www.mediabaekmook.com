@@ -11,8 +11,9 @@ const EXCLUDE_TOP = new Set([
   "dist", "node_modules", "functions", "lib", "scripts", "test", "_archive_old", ".wrangler", ".git",
   "README.md", "DEPLOY.md", "schema.sql", "seed-equipment.sql", "wrangler.toml", "package.json", "package-lock.json",
   "preview.png", ".dev.vars", ".dev.vars.example", ".gitignore",
+  "google-apps-script", ".claude", "set-resend-key.ps1",
 ]);
-const EXCLUDE_ANY = (name) => name.endsWith(".TODO") || name === ".DS_Store" || name === "README.md";
+const EXCLUDE_ANY = (name) => name.endsWith(".TODO") || name.endsWith(".ps1") || name.endsWith(".gs") || name === ".DS_Store" || name === "README.md";
 
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out);
