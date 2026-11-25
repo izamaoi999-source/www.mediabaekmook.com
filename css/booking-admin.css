@@ -98,3 +98,22 @@
 @media (max-width: 850px) { .ba-filters { grid-template-columns: 1fr 1fr; } .ba-filter-actions { grid-column: 1 / -1; } .ba-layout { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 450px) { .ba-main { padding-top: 1.75rem; } .ba-filters { grid-template-columns: minmax(0, 1fr); gap: .85rem; } .ba-filter-actions { grid-column: auto; } .ba-facts { grid-template-columns: 5.5rem minmax(0, 1fr); } .ba-heading .btn { width: 100%; } .ba-detail-heading { align-items: flex-start; } }
 @media (prefers-reduced-motion: reduce) { .booking-admin-page * { scroll-behavior: auto; transition: none !important; } }
+
+/* 장비 내역 관리 */
+.ba-equipment { margin-top: 1.5rem; box-shadow: none; padding: clamp(1rem, 3vw, 1.5rem); }
+.ba-eq-help { color: #53635a; font-size: .9375rem; margin: 0 0 1rem; }
+.ba-eq-studio { max-width: 14rem; }
+.ba-eq-list { margin-bottom: 1.5rem; }
+.ba-eq-cat { font-size: 1rem; margin: 1.1rem 0 .3rem; padding-bottom: .3rem; border-bottom: 2px solid #00A651; color: #183e27; }
+.ba-eq-item { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .65rem .25rem; border-bottom: 1px solid #dde7e0; }
+.ba-eq-item.is-editing { background: #e7f3ec; border-radius: .5rem; }
+.ba-eq-info { min-width: 0; }
+.ba-eq-name { margin: 0; font-weight: 700; color: #16251c; overflow-wrap: anywhere; }
+.ba-eq-qty { font-weight: 600; color: #53635a; }
+.ba-eq-sub { margin: .1rem 0 0; font-size: .875rem; color: #33483b; overflow-wrap: anywhere; }
+.ba-eq-note { color: #53635a; }
+.ba-eq-actions { display: flex; flex: none; gap: .3rem; flex-wrap: wrap; justify-content: flex-end; }
+.ba-eq-actions .btn-sm { padding: .35rem .65rem; min-width: 2.4rem; }
+.ba-eq-form { border-top: 1px solid #dde7e0; padding-top: 1.2rem; }
+.ba-eq-form h3 { margin: 0 0 .4rem; font-size: 1.1rem; }
+@media (max-width: 560px) { .ba-eq-item { flex-direction: column; align-items: stretch; } .ba-eq-actions { justify-content: flex-start; } }

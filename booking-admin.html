@@ -8,7 +8,7 @@
   <meta name="referrer" content="same-origin">
   <title>예약 관리 | 스튜디오 미디어백묵</title>
   <link rel="stylesheet" href="/css/style.css?v=20261123-booking">
-  <link rel="stylesheet" href="/css/booking-admin.css?v=20261125-admin">
+  <link rel="stylesheet" href="/css/booking-admin.css?v=20261126-eq">
 </head>
 <body class="booking-admin-page">
   <header class="site-header">
@@ -115,6 +115,29 @@
           </div>
         </section>
       </div>
+
+      <section class="card ba-equipment" id="ba-equipment" aria-labelledby="ba-eq-title">
+        <div class="ba-section-head"><h2 id="ba-eq-title">장비 내역 관리</h2><span id="ba-eq-count" aria-live="polite"></span></div>
+        <p class="ba-eq-help">여기서 바꾼 내용은 지점 소개 페이지의 '세부 장비 내역'과 <a href="/equipment" target="_blank" rel="noopener">장비 리스트</a>에 바로 반영됩니다. <a id="ba-eq-view" href="/bangbae/#equipment" target="_blank" rel="noopener">소개 페이지에서 확인</a></p>
+        <label class="ba-field ba-eq-studio" for="ba-eq-studio"><span>지점</span><select id="ba-eq-studio"><option value="bangbae">방배점</option><option value="yeongeon">연건점</option></select></label>
+        <p class="ba-message" id="ba-eq-message" role="status" aria-live="polite" hidden></p>
+        <div class="ba-eq-list" id="ba-eq-list"></div>
+
+        <form id="ba-eq-form" class="ba-eq-form" autocomplete="off">
+          <h3 id="ba-eq-form-title">장비 추가</h3>
+          <p class="ba-eq-help"><strong id="ba-eq-form-studio">방배점</strong> 목록에 저장됩니다. 같은 분류끼리 묶여 보이며, 순서는 목록의 ↑↓ 버튼으로 바꿉니다.</p>
+          <div class="ba-edit-grid">
+            <label class="ba-field" for="ba-eq-category"><span>분류 <small>예: 촬영, 음향, 판서, 배경·조명</small></span><input id="ba-eq-category" name="category" maxlength="30" list="ba-eq-cats"></label>
+            <label class="ba-field" for="ba-eq-name"><span>장비 이름 (필수)</span><input id="ba-eq-name" name="name" maxlength="60" required></label>
+            <label class="ba-field" for="ba-eq-model"><span>모델명·규격 <small>선택</small></span><input id="ba-eq-model" name="model" maxlength="80"></label>
+            <label class="ba-field" for="ba-eq-qty"><span>수량 <small>선택 · 비우면 표시 안 함</small></span><input id="ba-eq-qty" name="qty" type="number" min="0" max="999" inputmode="numeric"></label>
+          </div>
+          <label class="ba-field" for="ba-eq-note"><span>비고 <small>선택 · 렌즈 구성, 사용 안내 등</small></span><input id="ba-eq-note" name="note" maxlength="200"></label>
+          <datalist id="ba-eq-cats"></datalist>
+          <p class="ba-message" id="ba-eq-form-message" role="status" aria-live="polite" hidden></p>
+          <div class="ba-save-row"><button class="btn btn-primary" type="submit" id="ba-eq-submit">추가</button><button class="btn btn-ghost" type="button" id="ba-eq-cancel" hidden>수정 취소</button></div>
+        </form>
+      </section>
     </section>
     <noscript><p class="ba-message ba-error">예약 관리를 사용하려면 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
   </main>
@@ -124,5 +147,6 @@
   <script src="/js/main.js?v=20261123-booking"></script>
   <script src="/js/booking-sms.js?v=20261123-sms"></script>
   <script src="/js/booking-admin.js?v=20261125-admin"></script>
+  <script src="/js/equipment-admin.js?v=20261126-eq"></script>
 </body>
 </html>
