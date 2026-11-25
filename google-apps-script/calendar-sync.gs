@@ -1,15 +1,16 @@
 /**
  * 미디어백묵 예약 ↔ 구글 캘린더 (Google Apps Script)
  *
- * 캘린더 주인 계정(감평사스튜디오공유캘린더 = 그 계정의 기본 캘린더)에서 실행합니다. 10분마다 두 가지를 합니다.
+ * 솔비원 계정에서 실행합니다. 스튜디오 캘린더는 izamaoi999 계정의 "방배 스튜디오 예약현황"이며,
+ * 솔비원 계정에 '변경' 권한으로 공유돼 있습니다(STUDIO_CALENDAR_ID). 10분마다 두 가지를 합니다.
  *
- * 1) 사이트 확정 예약 → 공유 캘린더
+ * 1) 사이트 확정 예약 → 방배 스튜디오 예약현황
  *    사이트의 확정 예약 피드(/api/bookings/calendar-feed)를 읽어
  *    새로 확정된 예약은 일정을 만들고, 날짜·시간이 바뀌면 고치고, 취소·대기·삭제(오늘 이후)면 지웁니다.
  *    예약번호 ↔ 일정 ID 는 스크립트 속성(ev:, sig:)에 저장하고, 이 스크립트가 만든 일정만 건드립니다.
  *
- * 2) 공유 캘린더 → 공개용 캘린더(사이트 표시용)
- *    공유 캘린더의 모든 일정을 공개용 캘린더 "미디어백묵 예약 현황(공개용)"에 복사합니다.
+ * 2) 방배 스튜디오 예약현황 → 공개용 캘린더(사이트 표시용)
+ *    방배 스튜디오 예약현황의 모든 일정을 공개용 캘린더 "미디어백묵 예약 현황(공개용)"에 복사합니다.
  *    제목은 앞 2글자만 남기고 나머지 글자를 * 로 가리며(공백 유지), 장소·설명은 복사하지 않습니다.
  *    공개용 캘린더는 이 스크립트만 관리합니다. 직접 일정을 넣어도 다음 실행 때 지워집니다.
  *
@@ -18,6 +19,7 @@
 
 var FEED_URL = 'https://mediabaekmook.com/api/bookings/calendar-feed';
 var ADMIN_URL = 'https://mediabaekmook.com/booking-admin';
+var STUDIO_CALENDAR_ID = 'f7ab92ffc2a3f1401d1e7751ffc5dae980da665964cb72e97b3171c518cb8b93@group.calendar.google.com'; // 방배 스튜디오 예약현황
 var PUBLIC_CALENDAR_NAME = '미디어백묵 예약 현황(공개용)';
 var MIRROR_PAST_DAYS = 31;     // 공개용 캘린더에 복사할 기간: 지난 31일 ~
 var MIRROR_FUTURE_DAYS = 400;  //                             앞으로 400일
@@ -54,6 +56,14 @@ function mask_(title) {
   }).join('');
 }
 
+/** 방배 스튜디오 예약현황 (공유받은 캘린더라 목록에 없으면 구독) */
+function studioCalendar_() {
+  var cal = CalendarApp.getCalendarById(STUDIO_CALENDAR_ID);
+  if (!cal) cal = CalendarApp.subscribeToCalendar(STUDIO_CALENDAR_ID);
+  if (!cal) throw new Error('방배 스튜디오 예약현황 캘린더에 접근할 수 없습니다. 공유 설정을 확인하세요.');
+  return cal;
+}
+
 /** 10분마다 실행 */
 function sync() {
   var lock = LockService.getScriptLock();
@@ -68,14 +78,14 @@ function sync() {
   if (feedError) throw feedError;
 }
 
-/** 1) 사이트 확정 예약 → 공유 캘린더 */
+/** 1) 사이트 확정 예약 → 방배 스튜디오 예약현황 */
 function syncFeed_() {
   var res = UrlFetchApp.fetch(FEED_URL, { muteHttpExceptions: true, headers: { 'Cache-Control': 'no-cache' } });
   if (res.getResponseCode() !== 200) throw new Error('피드 응답 ' + res.getResponseCode());
   var feed = JSON.parse(res.getContentText());
   if (!feed || !feed.bookings || !feed.from) throw new Error('피드 형식 오류');
 
-  var cal = CalendarApp.getDefaultCalendar();
+  var cal = studioCalendar_();
   var props = PropertiesService.getScriptProperties();
   var saved = props.getProperties();
   var seen = {};
@@ -128,9 +138,9 @@ function publicCalendar_() {
   return cal;
 }
 
-/** 2) 공유 캘린더 → 공개용 캘린더 (제목 가림) */
+/** 2) 방배 스튜디오 예약현황 → 공개용 캘린더 (제목 가림) */
 function mirror_() {
-  var src = CalendarApp.getDefaultCalendar();
+  var src = studioCalendar_();
   var dst = publicCalendar_();
   var now = new Date();
   var from = new Date(now.getTime() - MIRROR_PAST_DAYS * 86400000);
@@ -178,6 +188,6 @@ function installTrigger() {
   });
   ScriptApp.newTrigger('sync').timeBased().everyMinutes(10).create();
   sync();
-  Logger.log('설치 완료: 캘린더 "' + CalendarApp.getDefaultCalendar().getName() + '" 에 10분마다 반영합니다.');
+  Logger.log('설치 완료: 캘린더 "' + studioCalendar_().getName() + '" 에 10분마다 반영합니다.');
   showPublicCalendarId();
 }
