@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00A651">
+  <title>방배점 온라인 예약 요청 | 스튜디오 미디어백묵</title>
+  <meta name="description" content="스튜디오 미디어백묵 방배점 강의 촬영 예약을 요청하세요. 날짜와 촬영 옵션을 선택해 예상 요금을 확인하고, 예약번호로 처리 상태를 조회할 수 있습니다.">
+  <link rel="canonical" href="https://mediabaekmook.com/booking">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="스튜디오 미디어백묵">
+  <meta property="og:title" content="방배점 온라인 예약 요청 | 스튜디오 미디어백묵">
+  <meta property="og:description" content="촬영 일정과 옵션을 선택하고 예약을 요청하세요. 담당자가 기존 일정을 확인한 후 예약 확정과 결제를 안내합니다.">
+  <meta property="og:url" content="https://mediabaekmook.com/booking">
+  <meta property="og:image" content="https://mediabaekmook.com/img/og.jpg">
+  <link rel="stylesheet" href="/css/style.css?v=20261117a">
+  <link rel="stylesheet" href="/css/booking.css?v=20261123">
+</head>
+<body class="booking-page">
+  <a class="booking-skip" href="#booking-main">예약 본문으로 이동</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="logo" href="/"><span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></a>
+      <button class="nav-toggle" type="button" aria-label="메뉴" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="/bangbae/">방배점</a>
+        <a href="/yeongeondong/">연건동점</a>
+        <a href="/gallery">촬영샘플</a>
+        <a href="/howto">이용 방법</a>
+        <a href="/faq">FAQ</a>
+        <a href="/board">견적 및 문의</a>
+        <a href="/booking" aria-current="page">온라인 예약</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="booking-main" class="booking-main">
+    <section class="container booking-intro">
+      <div>
+        <p class="booking-eyebrow">방배점 · 강의 촬영 전용</p>
+        <h1>촬영할 날짜를 알려주세요.</h1>
+        <p class="lead">일정과 촬영 옵션을 선택하면 예상 요금을 확인할 수 있습니다.<br class="booking-desktop-break"> 접수 후 담당자가 기존 예약표를 확인하고 예약 확정·결제를 안내합니다.</p>
+      </div>
+      <a class="booking-studio-link" href="/bangbae/">
+        <img src="/img/bangbae-main.webp" alt="방배점 강의 촬영 스튜디오 내부" width="640" height="360">
+        <span>방배점 공간·장비 살펴보기</span>
+      </a>
+    </section>
+
+    <section class="container booking-workspace" aria-label="온라인 예약">
+      <div class="booking-tabs" role="tablist" aria-label="예약 메뉴">
+        <button type="button" id="tab-request" role="tab" aria-selected="true" aria-controls="panel-request" tabindex="0">예약 요청</button>
+        <button type="button" id="tab-lookup" role="tab" aria-selected="false" aria-controls="panel-lookup" tabindex="-1">내 예약 조회</button>
+      </div>
+
+      <div id="panel-request" role="tabpanel" aria-labelledby="tab-request">
+        <div id="booking-config-state" class="booking-notice" role="status">
+          예약 설정과 요금을 불러오고 있습니다.
+        </div>
+        <div id="booking-service-error" class="booking-message booking-message-error" role="alert" hidden>
+          <p id="booking-service-error-text"></p>
+          <div class="btn-row">
+            <button type="button" class="btn btn-ghost" id="booking-retry-config">다시 불러오기</button>
+            <a class="btn btn-primary" href="tel:01029286068">전화 문의</a>
+            <a class="btn btn-ghost" href="/board">문의 게시판</a>
+          </div>
+        </div>
+
+        <div id="booking-request-content" class="booking-layout" hidden>
+          <div class="booking-form-column">
+            <ol class="booking-stepper" aria-label="예약 요청 단계">
+              <li class="is-current" aria-current="step"><span class="booking-step-number" aria-hidden="true">1</span><span>날짜와 시간</span></li>
+              <li><span class="booking-step-number" aria-hidden="true">2</span><span>촬영 옵션</span></li>
+              <li><span class="booking-step-number" aria-hidden="true">3</span><span>연락처와 확인</span></li>
+            </ol>
+
+            <form id="booking-form" novalidate>
+              <fieldset class="booking-step" data-step="0">
+                <legend><span class="booking-section-label">날짜와 시간</span></legend>
+                <h2 tabindex="-1">언제 촬영하시나요?</h2>
+                <p class="booking-help">방배점에서 예약을 받습니다. 연건동점은 준비 중입니다.</p>
+                <div class="booking-location">
+                  <strong>방배점</strong>
+                  <span>서울시 서초구 방배로 52 · 감정평가사협회 건물 지하 1층</span>
+                  <span>예약시간 내 주차 1대 무료</span>
+                </div>
+                <div class="field-grid">
+                  <label class="field" for="booking-date"><span>촬영 날짜 <em>*</em></span>
+                    <input id="booking-date" name="date" type="date" required aria-describedby="booking-date-help">
+                  </label>
+                  <label class="field" for="booking-duration"><span>이용 시간 <em>*</em></span>
+                    <select id="booking-duration" name="duration" required></select>
+                  </label>
+                </div>
+                <p id="booking-date-help" class="booking-help">오늘부터 180일 이내의 날짜를 선택할 수 있습니다. 이용 준비와 정리 시간도 예약시간에 포함됩니다.</p>
+                <label class="field" for="booking-start"><span>시작 시간 <em>*</em></span>
+                  <select id="booking-start" name="start_time" required disabled><option value="">날짜를 먼저 선택해 주세요</option></select>
+                </label>
+                <p id="booking-availability" class="booking-help" role="status" aria-live="polite"></p>
+                <button id="booking-retry-availability" type="button" class="booking-text-button" hidden>선택한 날짜 다시 확인</button>
+                <div class="booking-notice">
+                  <strong>신청만으로 예약이 확정되지는 않습니다.</strong>
+                  표시되는 시간에는 온라인으로 확정된 예약이 반영됩니다. 담당자가 기존 예약표까지 대조한 후 가능 여부를 안내합니다.
+                  <a href="/#schedule" target="_blank" rel="noopener">기존 예약표 보기<span class="booking-sr-only"> (새 창)</span></a>
+                </div>
+                <div class="booking-step-actions"><button id="booking-next-time" class="btn btn-primary" type="button" data-next>촬영 옵션 선택</button></div>
+              </fieldset>
+
+              <fieldset class="booking-step" data-step="1" hidden>
+                <legend><span class="booking-section-label">촬영 옵션</span></legend>
+                <h2 tabindex="-1">어떤 방식으로 촬영하시나요?</h2>
+                <p class="booking-help">촬영 유형을 알려주시면 방문 전 준비에 도움이 됩니다.</p>
+                <div class="booking-choice-grid" role="group" aria-label="촬영 유형">
+                  <label class="booking-choice"><input type="radio" name="shoot_type" value="ppt" checked><span><strong>PPT·화면 설명</strong><small>자료와 함께 진행하는 강의</small></span></label>
+                  <label class="booking-choice"><input type="radio" name="shoot_type" value="board"><span><strong>칠판·전자칠판</strong><small>직접 쓰며 설명하는 강의</small></span></label>
+                  <label class="booking-choice"><input type="radio" name="shoot_type" value="chromakey"><span><strong>크로마키</strong><small>배경 합성을 위한 촬영</small></span></label>
+                  <label class="booking-choice"><input type="radio" name="shoot_type" value="other"><span><strong>기타 촬영</strong><small>요청사항에 내용을 적어 주세요</small></span></label>
+                </div>
+                <label class="field" for="booking-people"><span>방문 인원 <em>*</em></span><select id="booking-people" name="people" required></select></label>
+                <label class="booking-assist" for="booking-assist">
+                  <input id="booking-assist" name="assist" type="checkbox">
+                  <span><strong>프로듀서 어시스트(촬영대행) 요청</strong><small><span id="booking-assist-rate"></span>/시간 · 스튜디오 대여료와 별도 · VAT 별도</small><small>담당자가 촬영대행 가능 여부를 함께 확인합니다.</small></span>
+                </label>
+                <label class="field" for="booking-notes"><span>촬영 내용·요청사항 <span class="booking-optional">선택</span></span>
+                  <textarea id="booking-notes" name="notes" rows="4" maxlength="2000" placeholder="촬영할 내용, 필요한 장비, 준비할 교안 등에 대해 알려주세요. (2,000자 이내)"></textarea>
+                </label>
+                <div class="booking-step-actions"><button class="btn btn-ghost" type="button" data-prev>날짜와 시간 수정</button><button class="btn btn-primary" type="button" data-next>연락처 입력</button></div>
+              </fieldset>
+
+              <fieldset class="booking-step" data-step="2" hidden>
+                <legend><span class="booking-section-label">연락처와 최종 확인</span></legend>
+                <h2 tabindex="-1">확인 안내를 받을 연락처를 남겨주세요.</h2>
+                <p class="booking-help">예약번호와 비밀번호로 처리 상태를 조회할 수 있습니다. 비밀번호는 별도로 보관해 주세요.</p>
+                <div class="field-grid">
+                  <label class="field" for="booking-name"><span>예약자 이름 <em>*</em></span><input id="booking-name" name="name" maxlength="30" required autocomplete="name"></label>
+                  <label class="field" for="booking-contact"><span>휴대전화 또는 이메일 <em>*</em></span><input id="booking-contact" name="contact" maxlength="100" required autocomplete="email" placeholder="010-0000-0000 또는 email@example.com" aria-describedby="booking-contact-help"></label>
+                </div>
+                <p id="booking-contact-help" class="booking-help">담당자가 이 연락처로 일정과 결제를 안내합니다.</p>
+                <div class="field-grid">
+                  <label class="field" for="booking-password"><span>예약 조회 비밀번호 <em>*</em></span><input id="booking-password" name="password" type="password" minlength="8" maxlength="64" required autocomplete="new-password" aria-describedby="booking-password-help"></label>
+                  <label class="field" for="booking-password-confirm"><span>비밀번호 확인 <em>*</em></span><input id="booking-password-confirm" type="password" minlength="8" maxlength="64" required autocomplete="new-password"></label>
+                </div>
+                <p id="booking-password-help" class="booking-help">8~64자로 입력해 주세요. 비밀번호는 접수 완료 화면에 표시되지 않습니다.</p>
+                <div class="booking-hp" aria-hidden="true"><label>웹사이트<input name="website" tabindex="-1" autocomplete="off"></label></div>
+                <div class="consent booking-consent">
+                  <p class="consent-title">개인정보 수집·이용 안내</p>
+                  <ul><li>수집 항목: 이름, 연락처, 예약 일정과 요청사항</li><li>이용 목적: 예약 상담·일정 확인·이용 안내</li><li>보관 기간: 예약 처리 후 1년</li></ul>
+                  <p>동의를 거부할 수 있으나 온라인 예약 요청이 제한됩니다. 전화 문의도 가능합니다.</p>
+                  <label class="check"><input type="checkbox" name="consent" required> 개인정보 수집·이용에 동의합니다. <em>*</em></label>
+                </div>
+                <p class="booking-notice">요청 접수 후 담당자가 일정을 확인합니다. <strong>예약 확정과 결제 방법은 별도로 안내</strong>하며, 이 페이지에서 결제하지 않습니다. 공휴일은 할증 적용 여부를 확인한 뒤 최종 금액을 안내합니다.</p>
+                <p id="booking-submit-error" class="booking-message booking-message-error" role="alert" hidden></p>
+                <div id="booking-submit-fallback" class="booking-help" hidden>접수가 계속 어렵다면 <a href="tel:01029286068">010-2928-6068</a> 또는 <a href="/board">문의 게시판</a>으로 연락해 주세요.</div>
+                <div class="booking-step-actions"><button class="btn btn-ghost" type="button" data-prev>촬영 옵션 수정</button><button id="booking-submit" class="btn btn-primary" type="submit">예약 요청 접수</button></div>
+              </fieldset>
+            </form>
+          </div>
+
+          <aside class="booking-summary" aria-labelledby="booking-summary-title">
+            <div class="booking-summary-top"><span>선택한 촬영 일정</span><h2 id="booking-summary-title">방배점 예약 요청</h2></div>
+            <dl class="booking-summary-details"><div><dt>날짜</dt><dd id="summary-date">날짜를 선택해 주세요</dd></div><div><dt>시간</dt><dd id="summary-time">시작 시간을 선택해 주세요</dd></div><div><dt>촬영 유형</dt><dd id="summary-type">PPT·화면 설명</dd></div><div><dt>방문 인원</dt><dd id="summary-people">1명</dd></div></dl>
+            <div class="booking-price-details"><div><span>스튜디오 대여</span><strong id="summary-rental">일정 선택 후 계산</strong></div><div id="summary-assist-row" hidden><span>촬영대행</span><strong id="summary-assist"></strong></div><div><span>부가가치세</span><strong id="summary-vat">—</strong></div></div>
+            <div class="booking-estimate"><span>예상 합계 <small>VAT 포함</small></span><strong id="summary-total">—</strong></div>
+            <p id="summary-rate" class="booking-help"></p>
+            <p class="booking-summary-note">공휴일·요청사항에 따라 최종 금액이 달라질 수 있습니다. 담당자 확인 후 안내합니다.</p>
+            <a class="booking-summary-contact" href="tel:01029286068">도움이 필요하세요? 010-2928-6068</a>
+          </aside>
+        </div>
+
+        <section id="booking-success" class="booking-receipt" aria-labelledby="booking-success-title" hidden>
+          <p class="booking-eyebrow">예약 요청 접수</p>
+          <h2 id="booking-success-title" tabindex="-1">촬영 요청을 접수했습니다.</h2>
+          <p>담당자가 기존 예약표를 확인한 후 남겨주신 연락처로 안내합니다. <strong>현재는 예약 확정 전입니다.</strong></p>
+          <div class="booking-reference"><span>예약번호</span><strong id="booking-success-reference"></strong><button id="booking-copy-reference" class="btn btn-ghost" type="button">예약번호 복사</button></div>
+          <p id="booking-copy-state" class="booking-help" aria-live="polite"></p>
+          <div id="booking-success-details"></div>
+          <p class="booking-notice">이 예약번호와 신청할 때 입력한 비밀번호로 ‘내 예약 조회’에서 상태를 확인하세요. 비밀번호는 다시 표시되지 않습니다.</p>
+          <div class="btn-row"><button id="booking-go-lookup" class="btn btn-primary" type="button">내 예약 조회</button><button id="booking-new-request" class="btn btn-ghost" type="button">새 예약 요청</button><a class="btn btn-ghost" href="/howto">방문 전 이용 방법</a></div>
+        </section>
+      </div>
+
+      <section id="panel-lookup" role="tabpanel" aria-labelledby="tab-lookup" hidden>
+        <div class="booking-lookup-layout">
+          <div class="booking-lookup-copy"><p class="booking-eyebrow">내 예약 조회</p><h2>접수한 예약의<br>처리 상태를 확인하세요.</h2><p>접수 화면의 예약번호와 신청할 때 입력한 비밀번호가 필요합니다.</p><p class="booking-help">예약번호를 찾기 어렵거나 변경·취소가 필요하면 <a href="tel:01029286068">010-2928-6068</a>로 문의해 주세요.</p></div>
+          <form id="booking-lookup-form" class="booking-lookup-form">
+            <label class="field" for="lookup-reference"><span>예약번호 <em>*</em></span><input id="lookup-reference" name="reference" maxlength="80" required autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="접수 화면에 표시된 예약번호"></label>
+            <label class="field" for="lookup-password"><span>예약 조회 비밀번호 <em>*</em></span><input id="lookup-password" name="password" type="password" minlength="8" maxlength="64" required autocomplete="off"></label>
+            <p id="booking-lookup-error" class="booking-message booking-message-error" role="alert" hidden></p>
+            <button id="booking-lookup-submit" class="btn btn-primary btn-block" type="submit">예약 조회</button>
+          </form>
+        </div>
+        <section id="booking-lookup-result" class="booking-receipt" aria-labelledby="lookup-result-title" hidden><h2 id="lookup-result-title" tabindex="-1">예약 처리 상태</h2><div id="booking-lookup-details"></div></section>
+      </section>
+    </section>
+    <noscript><div class="container booking-message booking-message-error">온라인 예약 요청에는 자바스크립트가 필요합니다. <a href="tel:01029286068">010-2928-6068</a>로 전화 문의해 주세요.</div></noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><div class="brand" data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></div><p class="mb-0">강의 촬영 스튜디오 대여 · 방배점 운영 · 연건동점 오픈 예정</p><p class="mb-0">전화 <a data-tel href="tel:01029286068">010-2928-6068</a></p><p class="mb-0">메일 <a data-email href="/cdn-cgi/l/email-protection#533a29323e323c3a133d322536217d303c3e"><span class="__cf_email__" data-cfemail="cda4b7aca0aca2a48da3acbba8bfe3aea2a0">[email&#160;protected]</span></a></p></div>
+      <div><p class="mb-0"><a href="/bangbae/">방배점</a></p><p class="mb-0"><a href="/yeongeondong/">연건동점 (준비중)</a></p><p class="mb-0"><a href="/booking">온라인 예약</a></p></div>
+      <div><p class="mb-0"><a href="/rules">이용 규칙 · 환불</a></p><p class="mb-0"><a href="/faq">FAQ</a></p><p class="mb-0"><a href="/board">견적 및 문의</a></p></div>
+    </div>
+    <div class="container"><p class="biz-info">상호 주식회사 미디어백묵 · 대표 김희은 · 사업자등록번호 760-86-02346<br>주소 경기도 고양시 덕양구 화신로260번길 36, 4층 401-11-28호(화정동, 뉴밀레니엄타워)</p><p>© <span data-year>2026</span> <span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></p></div>
+  </footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/config.js?v=20261117a"></script>
+  <script src="/js/main.js?v=20261117a"></script>
+  <script src="/js/booking.js?v=20261123"></script>
+</body>
+</html>

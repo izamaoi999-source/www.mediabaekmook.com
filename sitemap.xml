@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://mediabaekmook.com/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/og.jpg</image:loc>
+      <image:title>스튜디오 미디어백묵 방배동 강의 촬영 스튜디오</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/bangbae/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/bangbae-main.jpg</image:loc>
+      <image:title>방배동 강의 촬영 스튜디오 전경 — 전자칠판, 칠판, 크로마키</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/bangbae-display.jpg</image:loc>
+      <image:title>방배동 강의 촬영 스튜디오 전자칠판</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/bangbae-chalkboard.jpg</image:loc>
+      <image:title>방배동 강의 촬영 스튜디오 칠판</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/bangbae-camera.jpg</image:loc>
+      <image:title>방배동 강의 촬영 스튜디오 촬영 카메라와 모니터</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/bangbae-chromakey.jpg</image:loc>
+      <image:title>방배동 강의 촬영 스튜디오 크로마키와 LED 조명</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/bangbae-floorplan.jpg</image:loc>
+      <image:title>방배 스튜디오 배치도 (개략도, 실측 아님)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mediabaekmook.com/img/og.jpg</image:loc>
+      <image:title>방배동 강의 촬영 스튜디오</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/yeongeondong/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/howto</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/rules</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/faq</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/gallery</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/equipment</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/board</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mediabaekmook.com/booking</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>

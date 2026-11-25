@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00A651">
+  <title>촬영샘플 | 공간대여 스튜디오 미디어백묵</title>
+  <meta name="description" content="방배동 강의 촬영 스튜디오에서 실제로 찍은 촬영샘플. 전자칠판·칠판·크로마키로 촬영한 강의·인강·유튜브 영상을 확인하세요.">
+  <meta name="keywords" content="강의 촬영 스튜디오, 강의 촬영 사례, 인강 촬영, 유튜브 촬영 스튜디오, 방배동 스튜디오, 스튜디오 대여, 촬영샘플">
+  <link rel="canonical" href="https://mediabaekmook.com/gallery">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="스튜디오 미디어백묵">
+  <meta property="og:title" content="촬영샘플 | 스튜디오 미디어백묵">
+  <meta property="og:description" content="방배동 강의 촬영 스튜디오에서 실제로 찍은 촬영샘플. 전자칠판·칠판·크로마키로 촬영한 강의·인강·유튜브 영상을 확인하세요.">
+  <meta property="og:url" content="https://mediabaekmook.com/gallery">
+  <meta property="og:image" content="https://mediabaekmook.com/img/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="촬영샘플 | 스튜디오 미디어백묵">
+  <meta name="twitter:description" content="방배동 강의 촬영 스튜디오에서 실제로 찍은 촬영샘플. 전자칠판·칠판·크로마키로 촬영한 강의·인강·유튜브 영상을 확인하세요.">
+  <meta name="twitter:image" content="https://mediabaekmook.com/img/og.jpg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "name": "촬영샘플",
+      "url": "https://mediabaekmook.com/gallery",
+      "description": "스튜디오 미디어백묵에서 촬영한 강의·인강·유튜브 영상 모음.",
+      "isPartOf": { "@type": "WebSite", "name": "스튜디오 미디어백묵", "url": "https://mediabaekmook.com/" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://mediabaekmook.com/" },
+        { "@type": "ListItem", "position": 2, "name": "촬영샘플", "item": "https://mediabaekmook.com/gallery" }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="css/style.css?v=20261123b">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="logo" href="/"><span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></a>
+      <button class="nav-toggle" type="button" aria-label="메뉴" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="/booking">온라인 예약</a>
+        <a href="/bangbae/">방배점</a>
+        <a href="/yeongeondong/">연건동점</a>
+        <a href="/gallery" aria-current="page">촬영샘플</a>
+        <a href="/howto">이용 방법</a>
+        <a href="/rules">이용 규칙</a>
+        <a href="/faq">FAQ</a>
+        <a href="/board">견적 및 문의</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero container">
+      <h1>촬영샘플</h1>
+      <p class="lead">스튜디오 미디어백묵<small class="brand-tag">강의 전문</small>에서 촬영한 강의·인강·유튜브 영상입니다. 썸네일을 누르면 바로 재생돼요.</p>
+    </section>
+
+    <section class="section video-section" id="video-gallery">
+      <div class="container">
+        <div class="board-admin-bar" id="video-admin-panel" hidden>
+          <span>관리자 모드 · 영상 추가·고정·삭제</span>
+          <button type="button" class="btn btn-ghost btn-sm" id="video-admin-logout">관리자 로그아웃</button>
+          <form id="video-add-form" class="video-add-form" autocomplete="off">
+            <label class="field"><span>유튜브 또는 Vimeo 주소 <em>*</em></span>
+              <input name="url" inputmode="url" maxlength="500" required placeholder="https://youtu.be/… 또는 https://vimeo.com/…"></label>
+            <label class="field"><span>제목 (비워 두면 영상 제목을 자동으로 가져옵니다)</span>
+              <input name="title" maxlength="100"></label>
+            <label class="field"><span>짧은 설명 (선택)</span>
+              <textarea name="description" rows="2" maxlength="300"></textarea></label>
+            <p class="board-msg" id="video-add-msg" role="status" hidden></p>
+            <div class="btn-row"><button class="btn btn-primary" type="submit">영상 추가</button></div>
+          </form>
+        </div>
+
+        <p class="board-msg" id="video-msg" role="alert" hidden></p>
+        <div class="video-grid" id="video-grid"></div>
+        <p class="board-empty muted" id="video-empty" hidden>아직 등록된 영상이 없습니다. 영상이 준비되면 이곳에 올라갑니다.</p>
+        <div class="text-center"><button type="button" class="btn btn-ghost" id="video-more" hidden>영상 더 보기</button></div>
+
+        <div class="card board-card video-login" id="video-admin-login" hidden>
+          <h2>관리자 로그인</h2>
+          <form id="video-admin-form" autocomplete="off">
+            <label class="field"><span>관리자 비밀번호</span>
+              <input type="password" id="video-admin-pw" required autocomplete="current-password"></label>
+            <p class="board-msg" id="video-login-msg" role="alert" hidden></p>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="submit">로그인</button>
+              <button class="btn btn-ghost" type="button" id="video-admin-cancel">취소</button>
+            </div>
+          </form>
+        </div>
+        <p class="board-admin-link"><a href="?admin" id="video-admin-link">관리자</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="brand" data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></div>
+      <p><a data-tel href="tel:01029286068">010-2928-6068</a> · <a data-email href="/cdn-cgi/l/email-protection#0b62716a666a64624b656a7d6e7925686466"><span class="__cf_email__" data-cfemail="f891829995999791b896998e9d8ad69b9795">[email&#160;protected]</span></a></p>
+      <p class="biz-info">상호 주식회사 미디어백묵 · 대표 김희은 · 사업자등록번호 760-86-02346<br>주소 경기도 고양시 덕양구 화신로260번길 36, 4층 401-11-28호(화정동, 뉴밀레니엄타워)</p>
+      <p style="font-size:0.8rem;">© <span data-year>2026</span> <span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></p>
+    </div>
+    <p class="visitor-count">총 방문자 <span id="visitor-count">-</span>명</p>
+  </footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/config.js?v=20261123b"></script>
+  <script src="js/main.js?v=20261123b"></script>
+  <script src="js/gallery.js?v=20261123b"></script>
+</body>
+</html>

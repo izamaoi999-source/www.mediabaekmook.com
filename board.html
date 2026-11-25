@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00A651">
+  <title>견적 및 문의 | 공간대여 스튜디오 미디어백묵</title>
+  <meta name="description" content="강의 촬영 스튜디오 견적 및 문의 게시판. 방배동 스튜디오 대여 견적·예약·촬영대행 문의를 비밀글로 남겨 주세요. 주말 영업.">
+  <link rel="canonical" href="https://mediabaekmook.com/board">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="스튜디오 미디어백묵">
+  <meta property="og:title" content="견적 및 문의 | 스튜디오 미디어백묵">
+  <meta property="og:description" content="강의 촬영 스튜디오 견적 및 문의 게시판. 방배동 스튜디오 대여 견적·예약·촬영대행 문의를 비밀글로 남겨 주세요. 주말 영업.">
+  <meta property="og:url" content="https://mediabaekmook.com/board">
+  <meta property="og:image" content="https://mediabaekmook.com/img/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="견적 및 문의 | 스튜디오 미디어백묵">
+  <meta name="twitter:description" content="강의 촬영 스튜디오 견적 및 문의 게시판. 방배동 스튜디오 대여 견적·예약·촬영대행 문의를 비밀글로 남겨 주세요. 주말 영업.">
+  <meta name="twitter:image" content="https://mediabaekmook.com/img/og.jpg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebPage", "name": "견적 및 문의", "url": "https://mediabaekmook.com/board" },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://mediabaekmook.com/" },
+        { "@type": "ListItem", "position": 2, "name": "견적 및 문의", "item": "https://mediabaekmook.com/board" }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="css/style.css?v=20261123b">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="logo" href="/"><span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></a>
+      <button class="nav-toggle" type="button" aria-label="메뉴" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="/booking">온라인 예약</a>
+        <a href="/bangbae/">방배점</a>
+        <a href="/yeongeondong/">연건동점</a>
+        <a href="/gallery">촬영샘플</a>
+        <a href="/howto">이용 방법</a>
+        <a href="/rules">이용 규칙</a>
+        <a href="/faq">FAQ</a>
+        <a href="/board" aria-current="page">견적 및 문의</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero container">
+      <h1>견적 및 문의</h1>
+      <p class="lead">대여 견적, 예약 가능 시간, 프로듀서 어시스트(촬영대행) 등 궁금한 점을 남겨 주세요. 모든 글은 <strong>비밀글</strong>이라 작성자와 관리자만 볼 수 있습니다.</p>
+    </section>
+
+    <section class="section board" id="board">
+      <div class="container">
+        <div id="admin-bar" class="board-admin-bar" hidden>
+          <span>관리자 모드 · 모든 글을 비밀번호 없이 열람할 수 있습니다.</span>
+          <button type="button" class="btn btn-ghost btn-sm" id="admin-logout">관리자 로그아웃</button>
+        </div>
+
+        <!-- 목록 -->
+        <div id="view-list">
+          <div class="board-toolbar">
+            <p class="muted mb-0" id="board-total" aria-live="polite"></p>
+            <button type="button" class="btn btn-primary" id="btn-write">문의 글쓰기</button>
+          </div>
+          <div class="board-list" role="table" aria-label="견적 및 문의 글 목록">
+            <div class="board-row board-head" role="row">
+              <span role="columnheader" class="c-no">번호</span>
+              <span role="columnheader" class="c-title">제목</span>
+              <span role="columnheader" class="c-name">작성자</span>
+              <span role="columnheader" class="c-date">날짜</span>
+            </div>
+            <div id="board-rows" role="rowgroup"></div>
+          </div>
+          <p class="board-empty muted" id="board-empty" hidden>아직 문의 글이 없습니다. 첫 문의를 남겨 주세요.</p>
+          <p class="board-msg" id="list-msg" role="alert" hidden></p>
+          <nav class="board-pager" id="board-pager" aria-label="페이지"></nav>
+          <p class="board-admin-link"><a href="?admin" id="admin-link">관리자</a></p>
+        </div>
+
+        <!-- 관리자 로그인 -->
+        <div id="view-admin" class="card board-card" hidden>
+          <h2>관리자 로그인</h2>
+          <form id="admin-form" autocomplete="off">
+            <label class="field"><span>관리자 비밀번호</span>
+              <input type="password" id="admin-pw" required autocomplete="current-password"></label>
+            <p class="board-msg" id="admin-msg" role="alert" hidden></p>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="submit">로그인</button>
+              <button class="btn btn-ghost" type="button" data-back>목록으로</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 글쓰기 -->
+        <div id="view-write" class="card board-card" hidden>
+          <h2>문의 글쓰기</h2>
+          <form id="write-form" novalidate>
+            <div class="field-grid">
+              <label class="field"><span>이름 <em>*</em></span>
+                <input name="name" maxlength="30" required autocomplete="name"></label>
+              <label class="field"><span>연락처 (전화 또는 이메일, 선택)</span>
+                <input name="contact" maxlength="100" autocomplete="tel" placeholder="010-0000-0000 또는 email@example.com"></label>
+              <label class="field"><span>스튜디오 <em>*</em></span>
+                <select name="studio" required>
+                  <option value="bangbae">방배</option>
+                  <option value="yeongeondong">연건동(준비중)</option>
+                  <option value="etc">기타</option>
+                </select></label>
+              <label class="field"><span>희망 날짜 (선택)</span>
+                <input type="date" name="desired_date"></label>
+            </div>
+            <label class="field"><span>제목 <em>*</em></span>
+              <input name="title" maxlength="100" required></label>
+            <label class="field"><span>내용 <em>*</em></span>
+              <textarea name="content" rows="8" maxlength="5000" required placeholder="희망 시간, 이용 인원, 촬영 내용, 프로듀서 어시스트 필요 여부 등을 적어 주세요."></textarea></label>
+            <label class="field"><span>비밀번호 <em>*</em> (4자 이상 · 글 열람/삭제에 사용)</span>
+              <input type="password" name="password" minlength="4" maxlength="64" required autocomplete="new-password"></label>
+            <!-- 스팸 방지용 칸: 사람은 비워 두세요 -->
+            <div class="hp" aria-hidden="true">
+              <label>웹사이트 <input name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
+            <div class="consent">
+              <p class="consent-title">개인정보 수집·이용 동의</p>
+              <ul>
+                <li>수집 항목: 이름, 연락처</li>
+                <li>수집 목적: 견적 및 문의 답변</li>
+                <li>보관 기간: 문의 처리 후 1년 (이후 파기)</li>
+              </ul>
+              <p class="mb-0">동의를 거부할 수 있으나, 거부 시 문의 글을 남길 수 없습니다.</p>
+              <label class="check"><input type="checkbox" name="consent" required> 위 내용에 동의합니다. <em>*</em></label>
+            </div>
+            <p class="board-msg" id="write-msg" role="alert" hidden></p>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="submit">등록하기</button>
+              <button class="btn btn-ghost" type="button" data-back>취소</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 비밀번호 확인 -->
+        <div id="view-unlock" class="card board-card" hidden>
+          <h2 id="unlock-title">비밀글</h2>
+          <p class="muted">글을 쓸 때 정한 비밀번호를 입력해 주세요.</p>
+          <form id="unlock-form" autocomplete="off">
+            <label class="field"><span>비밀번호</span>
+              <input type="password" id="unlock-pw" required autocomplete="current-password"></label>
+            <p class="board-msg" id="unlock-msg" role="alert" hidden></p>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="submit">열기</button>
+              <button class="btn btn-ghost" type="button" data-back>목록으로</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 글 보기 -->
+        <article id="view-post" class="card board-card" hidden>
+          <header class="post-head">
+            <p class="post-meta" id="post-meta"></p>
+            <h2 id="post-title"></h2>
+          </header>
+          <dl class="post-info" id="post-info"></dl>
+          <div class="post-body" id="post-content"></div>
+          <section class="post-reply" id="post-reply" hidden>
+            <h3>답변</h3>
+            <p class="post-meta" id="reply-meta"></p>
+            <div class="post-body" id="reply-content"></div>
+          </section>
+          <p class="muted post-wait" id="reply-wait" hidden>아직 답변이 등록되지 않았습니다. 확인 후 답변드리겠습니다.</p>
+          <form id="reply-form" class="reply-form" hidden>
+            <label class="field"><span>답변 작성 (관리자)</span>
+              <textarea id="reply-text" rows="6" maxlength="5000"></textarea></label>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="submit">답변 저장</button>
+            </div>
+          </form>
+          <p class="board-msg" id="post-msg" role="alert" hidden></p>
+          <div class="btn-row">
+            <button class="btn btn-ghost" type="button" data-back>목록으로</button>
+            <button class="btn btn-danger" type="button" id="btn-delete">글 삭제</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="brand" data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></div>
+      <p><a data-tel href="tel:01029286068">010-2928-6068</a> · <a data-email href="/cdn-cgi/l/email-protection#ea83908b878b8583aa848b9c8f98c4898587"><span class="__cf_email__" data-cfemail="39504358545856507957584f5c4b175a5654">[email&#160;protected]</span></a></p>
+      <p class="biz-info">상호 주식회사 미디어백묵 · 대표 김희은 · 사업자등록번호 760-86-02346<br>주소 경기도 고양시 덕양구 화신로260번길 36, 4층 401-11-28호(화정동, 뉴밀레니엄타워)</p>
+      <p style="font-size:0.8rem;">© <span data-year>2026</span> <span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></p>
+    </div>
+    <p class="visitor-count">총 방문자 <span id="visitor-count">-</span>명</p>
+  </footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/config.js?v=20261123b"></script>
+  <script src="js/main.js?v=20261123b"></script>
+  <script src="js/board.js?v=20261123b"></script>
+</body>
+</html>

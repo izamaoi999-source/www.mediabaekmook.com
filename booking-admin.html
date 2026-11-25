@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00843D">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="same-origin">
+  <title>예약 관리 | 스튜디오 미디어백묵</title>
+  <link rel="stylesheet" href="/css/style.css?v=20261123-booking">
+  <link rel="stylesheet" href="/css/booking-admin.css?v=20261123-sms">
+</head>
+<body class="booking-admin-page">
+  <header class="site-header">
+    <div class="container nav">
+      <a class="logo" href="/"><span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></a>
+      <button class="nav-toggle" type="button" aria-label="메뉴" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="/booking">고객 예약 페이지</a>
+        <a href="/board?admin">문의 관리</a>
+        <a href="/#schedule" target="_blank" rel="noopener">기존 예약표</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container ba-main">
+    <header class="ba-heading">
+      <div><p class="ba-eyebrow">STUDIO MEDIA BAEKMOOK</p><h1>예약 관리</h1><p>방배점 예약 요청을 확인하고 이용 상태를 관리합니다.</p></div>
+      <button class="btn btn-ghost" type="button" id="ba-logout" hidden>관리자 로그아웃</button>
+    </header>
+
+    <section class="card ba-login" id="ba-login" aria-labelledby="ba-login-title">
+      <h2 id="ba-login-title">관리자 로그인</h2>
+      <p>문의 게시판과 같은 관리자 비밀번호를 사용합니다. 로그인 전에는 예약 정보를 불러오지 않습니다.</p>
+      <form id="ba-login-form">
+        <label class="ba-field" for="ba-password"><span>관리자 비밀번호</span><input id="ba-password" name="password" type="password" required maxlength="256" autocomplete="current-password"></label>
+        <p class="ba-message ba-error" id="ba-login-message" role="alert" hidden></p>
+        <button class="btn btn-primary" type="submit" id="ba-login-submit">로그인</button>
+      </form>
+    </section>
+
+    <section id="ba-workspace" hidden aria-label="예약 관리 화면">
+      <div class="ba-notice"><strong>확정 전 기존 예약표를 대조해 주세요.</strong><p>온라인 접수만으로 예약이 확정되지는 않습니다. 외부에서 받은 예약은 <a href="/#schedule" target="_blank" rel="noopener">기존 Google 예약표</a>와 확인한 후 확정해 주세요. 상태 변경은 고객에게 문자나 이메일을 자동 발송하지 않으며, 결제 완료도 의미하지 않습니다.</p></div>
+
+      <form class="ba-filters" id="ba-filter-form">
+        <label class="ba-field" for="ba-filter-status"><span>예약 상태</span><select id="ba-filter-status" name="status"><option value="requested">접수 대기</option><option value="confirmed">예약 확정</option><option value="completed">이용 완료</option><option value="cancelled">취소</option><option value="">전체 상태</option></select></label>
+        <label class="ba-field" for="ba-filter-date"><span>이용 날짜</span><input id="ba-filter-date" type="date" name="date"></label>
+        <div class="ba-filter-actions"><button class="btn btn-primary" type="submit">조회</button><button class="btn btn-ghost" id="ba-filter-reset" type="button">필터 초기화</button></div>
+      </form>
+
+      <p class="ba-message" id="ba-main-message" role="status" aria-live="polite" hidden></p>
+      <div class="ba-layout">
+        <section class="ba-list-panel" aria-labelledby="ba-list-title" id="ba-list-panel">
+          <div class="ba-section-head"><h2 id="ba-list-title">예약 요청 목록</h2><span id="ba-count" aria-live="polite"></span></div>
+          <p class="ba-loading" id="ba-loading" role="status" hidden>예약을 불러오고 있습니다.</p>
+          <p class="ba-empty" id="ba-empty" hidden>이 조건에 해당하는 예약이 없습니다.</p>
+          <div class="ba-booking-list" id="ba-list"></div>
+          <nav class="ba-pager" id="ba-pager" aria-label="예약 목록 페이지"></nav>
+        </section>
+
+        <section class="card ba-detail" id="ba-detail" aria-labelledby="ba-detail-title">
+          <div id="ba-detail-empty"><h2 id="ba-detail-title" tabindex="-1">예약 상세</h2><p>목록에서 예약을 선택하면 연락처와 촬영 요청을 확인할 수 있습니다.</p></div>
+          <div id="ba-detail-body" hidden>
+            <div class="ba-detail-heading"><div><p class="ba-reference" id="ba-reference"></p><h2 id="ba-person-title" tabindex="-1"></h2></div><span class="ba-status" id="ba-current-status"></span></div>
+            <dl class="ba-facts" id="ba-facts"></dl>
+            <div class="ba-request"><h3>고객 요청사항</h3><p id="ba-notes"></p></div>
+            <div class="ba-estimate"><h3>접수 당시 예상 견적</h3><dl id="ba-estimate-lines"></dl><p>공휴일 할증과 추가 요청은 별도 확인이 필요합니다. 최종 금액과 결제 방법은 고객에게 직접 안내해 주세요.</p></div>
+
+            <section class="ba-sms" aria-labelledby="ba-sms-title">
+              <h3 id="ba-sms-title">고객에게 문자 보내기</h3>
+              <p class="ba-sms-help">문구를 복사한 뒤 휴대폰 문자앱을 열어 붙여넣고 직접 전송하세요.</p>
+              <p class="ba-sms-help" id="ba-sms-state"></p>
+              <label class="ba-field" for="ba-sms-phone"><span>받는 휴대전화</span><input id="ba-sms-phone" type="tel" inputmode="tel" autocomplete="off" maxlength="32" aria-describedby="ba-sms-phone-help"><small id="ba-sms-phone-help">이 번호를 바꿔도 예약에 저장된 연락처는 변경되지 않습니다.</small></label>
+              <label class="ba-field" for="ba-sms-text"><span>문자 안내 문구 <small>보내기 전에 내용을 수정할 수 있습니다.</small></span><textarea id="ba-sms-text" rows="8" maxlength="2000"></textarea></label>
+              <div class="ba-sms-actions"><button class="btn btn-primary" type="button" id="ba-sms-copy">문자 문구 복사</button><a class="btn btn-ghost" id="ba-sms-open" aria-disabled="true" tabindex="-1">휴대폰 문자앱 열기</a><button class="btn btn-ghost" type="button" id="ba-sms-reset">기본 문구로 되돌리기</button></div>
+              <p class="ba-message" id="ba-sms-message" role="status" aria-live="polite" hidden></p>
+              <p class="ba-sms-help">문자앱을 여는 것만으로 발송되지는 않습니다. 전송 버튼은 직접 눌러 주세요. 문자 요금은 휴대전화 요금제에 따르며, PC에서 앱이 열리지 않으면 휴대폰에서 이용해 주세요.</p>
+            </section>
+
+            <form id="ba-update-form">
+              <label class="ba-field" for="ba-status"><span>변경할 상태</span><select id="ba-status" name="status" required></select></label>
+              <div class="ba-confirm-check" id="ba-confirm-check" hidden><label><input id="ba-calendar-checked" type="checkbox"><span>기존 예약표와 촬영 지원 가능 여부를 확인했습니다.</span></label><p>공휴일 요금·최종 견적·결제 안내는 고객과 별도로 확인해 주세요.</p></div>
+              <label class="ba-field" for="ba-admin-note"><span>내부 메모 <small>고객 예약 조회에 표시되지 않습니다.</small></span><textarea id="ba-admin-note" name="admin_note" rows="5" maxlength="2000" placeholder="고객 연락, 일정 대조, 최종 견적 안내 등 운영 내용을 기록하세요."></textarea></label>
+              <p class="ba-message" id="ba-detail-message" role="alert" hidden></p>
+              <button class="btn btn-primary" id="ba-save" type="submit">변경 저장</button>
+              <p class="ba-updated" id="ba-updated"></p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </section>
+    <noscript><p class="ba-message ba-error">예약 관리를 사용하려면 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="brand" data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></div><p><a data-tel href="tel:01029286068">010-2928-6068</a> · <a data-email href="/cdn-cgi/l/email-protection#ee87948f838f8187ae808f988b9cc08d8183"><span class="__cf_email__" data-cfemail="721b08131f131d1b321c130417005c111d1f">[email&#160;protected]</span></a></p><p>© <span data-year>2026</span> 스튜디오 미디어백묵</p></div></footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/config.js?v=20261123-booking"></script>
+  <script src="/js/main.js?v=20261123-booking"></script>
+  <script src="/js/booking-sms.js?v=20261123-sms"></script>
+  <script src="/js/booking-admin.js?v=20261123-sms"></script>
+</body>
+</html>

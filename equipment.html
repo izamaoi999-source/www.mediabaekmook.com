@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00A651">
+  <title>장비 리스트 | 공간대여 스튜디오 미디어백묵</title>
+  <meta name="description" content="방배동 강의 촬영 스튜디오 장비 리스트. 카메라·마이크·모니터·전자칠판·칠판·크로마키·LED 조명. 연건점은 오픈 준비중.">
+  <link rel="canonical" href="https://mediabaekmook.com/equipment">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="스튜디오 미디어백묵">
+  <meta property="og:title" content="장비 리스트 | 스튜디오 미디어백묵">
+  <meta property="og:description" content="방배동 강의 촬영 스튜디오 장비 리스트. 카메라·마이크·모니터·전자칠판·칠판·크로마키·LED 조명. 연건점은 오픈 준비중.">
+  <meta property="og:url" content="https://mediabaekmook.com/equipment">
+  <meta property="og:image" content="https://mediabaekmook.com/img/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="장비 리스트 | 스튜디오 미디어백묵">
+  <meta name="twitter:description" content="방배동 강의 촬영 스튜디오 장비 리스트. 카메라·마이크·모니터·전자칠판·칠판·크로마키·LED 조명. 연건점은 오픈 준비중.">
+  <meta name="twitter:image" content="https://mediabaekmook.com/img/og.jpg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebPage", "name": "장비 리스트", "url": "https://mediabaekmook.com/equipment" },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://mediabaekmook.com/" },
+        { "@type": "ListItem", "position": 2, "name": "장비 리스트", "item": "https://mediabaekmook.com/equipment" }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="css/style.css?v=20261123b">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="logo" href="/"><span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></a>
+      <button class="nav-toggle" type="button" aria-label="메뉴" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="/booking">온라인 예약</a>
+        <a href="/bangbae/">방배점</a>
+        <a href="/yeongeondong/">연건동점</a>
+        <a href="/gallery">촬영샘플</a>
+        <a href="/howto">이용 방법</a>
+        <a href="/rules">이용 규칙</a>
+        <a href="/faq">FAQ</a>
+        <a href="/board">견적 및 문의</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero container">
+      <h1>장비 리스트</h1>
+      <p class="lead">지점마다 갖춘 촬영 장비가 다릅니다. 지점을 골라 확인해 주세요.</p>
+    </section>
+
+    <section class="section equipment" id="equipment">
+      <div class="container">
+        <div class="eq-tabs" role="tablist" aria-label="지점 선택">
+          <button type="button" role="tab" id="tab-bangbae" data-eq-tab="bangbae" aria-controls="eq-panel" aria-selected="true">방배점</button>
+          <button type="button" role="tab" id="tab-yeongeon" data-eq-tab="yeongeon" aria-controls="eq-panel" aria-selected="false" tabindex="-1">연건점</button>
+        </div>
+
+        <div class="eq-panel card" id="eq-panel" role="tabpanel" aria-labelledby="tab-bangbae" data-studio="bangbae">
+          <h2 id="eq-title">방배점 장비 리스트</h2>
+          <p class="board-msg" id="eq-msg" role="alert" hidden></p>
+          <div id="eq-list"></div>
+          <p class="eq-empty" id="eq-empty" hidden></p>
+
+          <div class="board-admin-bar eq-admin-panel" id="eq-admin-panel" hidden>
+            <span>관리자 모드 · <strong id="eq-form-studio">방배점</strong> 목록 편집</span>
+            <button type="button" class="btn btn-ghost btn-sm" id="eq-admin-logout">관리자 로그아웃</button>
+            <form id="eq-form" class="video-add-form" autocomplete="off">
+              <p class="eq-form-mode" id="eq-form-mode">장비 추가</p>
+              <div class="field-grid">
+                <label class="field"><span>분류 (예: 촬영, 음향, 판서, 조명)</span><input name="category" maxlength="30"></label>
+                <label class="field"><span>장비 이름 <em>*</em></span><input name="name" maxlength="60" required></label>
+                <label class="field"><span>모델명 (선택)</span><input name="model" maxlength="80"></label>
+                <label class="field"><span>수량 (선택)</span><input name="qty" type="number" min="0" max="999" inputmode="numeric"></label>
+              </div>
+              <label class="field"><span>비고 (선택)</span><input name="note" maxlength="200"></label>
+              <p class="board-msg" id="eq-form-msg" role="status" hidden></p>
+              <div class="btn-row">
+                <button class="btn btn-primary" type="submit" id="eq-form-submit">추가</button>
+                <button class="btn btn-ghost" type="button" id="eq-form-cancel" hidden>수정 취소</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="btn-row eq-links">
+          <a class="btn btn-ghost" href="/bangbae/">방배점 안내</a>
+          <a class="btn btn-ghost" href="/yeongeondong/">연건점 안내</a>
+          <a class="btn btn-ghost" href="/board">견적 및 문의</a>
+        </div>
+
+        <div class="card board-card video-login" id="eq-admin-login" hidden>
+          <h2>관리자 로그인</h2>
+          <form id="eq-admin-form" autocomplete="off">
+            <label class="field"><span>관리자 비밀번호</span>
+              <input type="password" id="eq-admin-pw" required autocomplete="current-password"></label>
+            <p class="board-msg" id="eq-login-msg" role="alert" hidden></p>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="submit">로그인</button>
+              <button class="btn btn-ghost" type="button" id="eq-admin-cancel">취소</button>
+            </div>
+          </form>
+        </div>
+        <p class="board-admin-link"><a href="?admin" id="eq-admin-link">관리자</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="brand" data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></div>
+      <p><a data-tel href="tel:01029286068">010-2928-6068</a> · <a data-email href="/cdn-cgi/l/email-protection#5e37243f333f31371e303f283b2c703d3133"><span class="__cf_email__" data-cfemail="81e8fbe0ece0eee8c1efe0f7e4f3afe2eeec">[email&#160;protected]</span></a></p>
+      <p class="biz-info">상호 주식회사 미디어백묵 · 대표 김희은 · 사업자등록번호 760-86-02346<br>주소 경기도 고양시 덕양구 화신로260번길 36, 4층 401-11-28호(화정동, 뉴밀레니엄타워)</p>
+      <p style="font-size:0.8rem;">© <span data-year>2026</span> <span data-brand>스튜디오 미디어백묵<small class="brand-tag">강의 전문</small></span></p>
+    </div>
+    <p class="visitor-count">총 방문자 <span id="visitor-count">-</span>명</p>
+  </footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/config.js?v=20261123b"></script>
+  <script src="js/main.js?v=20261123b"></script>
+  <script src="js/equipment.js?v=20261123b"></script>
+</body>
+</html>
