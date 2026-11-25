@@ -56,3 +56,36 @@ CREATE TABLE IF NOT EXISTS equipment (
   updated_at  INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_equipment_studio ON equipment(studio, sort_order, id);
+
+-- 온라인 예약 (방배점). 비밀번호는 PBKDF2 해시만 저장. version 은 관리자 동시 수정 충돌 방지용
+CREATE TABLE IF NOT EXISTS reservations (
+  id                INTEGER PRIMARY KEY AUTOINCREMENT,
+  reference         TEXT    NOT NULL UNIQUE,          -- 고객에게 보여주는 예약번호 (예: BB261201-7KQ4P)
+  request_id        TEXT    NOT NULL UNIQUE,          -- 브라우저가 만든 UUID, 중복 접수 방지
+  studio            TEXT    NOT NULL DEFAULT 'bangbae',
+  date              TEXT    NOT NULL,                 -- YYYY-MM-DD (KST)
+  start_time        TEXT    NOT NULL,                 -- HH:00
+  duration          INTEGER NOT NULL,                 -- 시간
+  people            INTEGER NOT NULL,
+  shoot_type        TEXT    NOT NULL DEFAULT 'other', -- ppt | board | chromakey | other
+  assist            INTEGER NOT NULL DEFAULT 0,       -- 촬영대행 요청 0/1
+  name              TEXT    NOT NULL,
+  contact           TEXT    NOT NULL,
+  notes             TEXT    NOT NULL DEFAULT '',
+  pw_hash           TEXT    NOT NULL,
+  pw_salt           TEXT    NOT NULL,
+  pw_iter           INTEGER NOT NULL,
+  ip_hash           TEXT    NOT NULL DEFAULT '',
+  consent_at        INTEGER NOT NULL,
+  status            TEXT    NOT NULL DEFAULT 'requested' CHECK (status IN ('requested', 'confirmed', 'completed', 'cancelled')),
+  admin_note        TEXT    NOT NULL DEFAULT '',
+  estimate_subtotal INTEGER NOT NULL DEFAULT 0,
+  estimate_vat      INTEGER NOT NULL DEFAULT 0,
+  estimate_total    INTEGER NOT NULL DEFAULT 0,
+  version           INTEGER NOT NULL DEFAULT 1,
+  notified_at       INTEGER,                          -- 관리자 알림 메일 발송 시각
+  created_at        INTEGER NOT NULL,
+  updated_at        INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_reservations_day ON reservations(studio, date, status);
+CREATE INDEX IF NOT EXISTS idx_reservations_status ON reservations(status, date, start_time);

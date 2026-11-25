@@ -77,6 +77,24 @@
 .ba-sms-actions a[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
 .ba-sms .ba-message { margin-top: .8rem; }
 .ba-sms-help:last-child { margin-bottom: 0; }
+.ba-edit { border: 1px solid #d6e2d9; border-radius: .7rem; padding: 1rem; margin: 0 0 1.25rem; min-width: 0; }
+.ba-edit legend { font-weight: 750; color: #17462b; padding: 0 .35rem; }
+.ba-edit legend small { display: block; font-weight: 400; font-size: .8125rem; color: #53635a; }
+.ba-edit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 .8rem; align-items: end; }
+.ba-check { display: flex; align-items: flex-start; gap: .55rem; font-size: .9375rem; font-weight: 700; color: #233a2d; margin-bottom: 1rem; min-height: 2.9rem; align-self: center; }
+.ba-check input { accent-color: #00843d; width: 1.15rem; height: 1.15rem; flex: 0 0 auto; margin-top: .2rem; }
+.ba-check small { display: block; font-weight: 400; font-size: .8125rem; color: #6b4f16; }
+.ba-force { background: #fff8df; border: 1px solid #e9d78e; border-radius: .7rem; padding: .75rem .9rem; min-height: 0; }
+.ba-edit-estimate { font-size: .875rem; color: #365541; margin: 0; }
+.ba-save-row { display: flex; flex-wrap: wrap; gap: .6rem; }
+.ba-delete { border: 1px solid #ebc3c3; background: #fff7f7; border-radius: .7rem; padding: 1rem; margin-top: 1.75rem; }
+.ba-delete h3 { font-size: 1.05rem; color: #7a2626; margin-bottom: .4rem; }
+.ba-delete p { font-size: .875rem; color: #6a3b3b; }
+.ba-delete form { margin-top: .75rem; }
+.ba-delete .ba-message { margin-top: .8rem; }
+.btn-danger { background: #b42318; color: #fff; border: 1px solid #b42318; }
+.btn-danger:hover:not(:disabled) { background: #912018; }
+@media (max-width: 450px) { .ba-edit-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 850px) { .ba-filters { grid-template-columns: 1fr 1fr; } .ba-filter-actions { grid-column: 1 / -1; } .ba-layout { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 450px) { .ba-main { padding-top: 1.75rem; } .ba-filters { grid-template-columns: minmax(0, 1fr); gap: .85rem; } .ba-filter-actions { grid-column: auto; } .ba-facts { grid-template-columns: 5.5rem minmax(0, 1fr); } .ba-heading .btn { width: 100%; } .ba-detail-heading { align-items: flex-start; } }
 @media (prefers-reduced-motion: reduce) { .booking-admin-page * { scroll-behavior: auto; transition: none !important; } }

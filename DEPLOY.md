@@ -64,3 +64,30 @@ node scripts/build.mjs && npx wrangler pages dev --port 8788
 ## 장비 리스트 (/equipment.html#bangbae, #yeongeon)
 - 방배점 | 연건점 탭. 관리자(`?admin`)는 현재 탭 지점의 장비만 추가·수정·순서 변경·삭제 (지점 변경 불가)
 - 관리자 비밀번호는 게시판·갤러리와 같은 `ADMIN_PASSWORD`, 한 번 로그인하면 같은 탭 세션 동안 세 화면 모두 관리자 모드
+
+## 온라인 예약 (/booking, /booking-admin)
+- 서버: `functions/api/bookings/*` + `lib/booking.js`, D1 테이블 `reservations` (`schema.sql`)
+  - `GET /api/bookings/config`, `GET /api/bookings/availability?studio=bangbae&date=` (확정·완료 예약 시간대만, 개인정보 없음)
+  - `POST /api/bookings` 접수 (request_id 로 중복 접수 방지, IP당 10분 5건) → 관리자 알림 메일
+  - `POST /api/bookings/lookup` 고객 조회 (예약번호 + 비밀번호)
+  - 관리자(`X-Admin-Password`): `GET /api/bookings/admin`, `PATCH /api/bookings/:id` (직권 수정·모든 상태 변경, `force` 로 영업시간·중복 검사 건너뜀), `DELETE /api/bookings/:id` (예약번호 재입력 필요)
+- 요금은 `js/config.js` 와 `lib/booking.js` 의 `BOOKING_STUDIO` 를 함께 바꾸고 `npm test` 로 확인
+
+### 최초 1회 (예약 기능 배포 전)
+```bash
+# 1) 테이블 추가 (기존 테이블은 건드리지 않음, 여러 번 실행해도 안전)
+npx wrangler d1 execute mediabaekmook-board --remote --file=schema.sql
+
+# 2) Resend API 키 (Resend 대시보드에서 mediabaekmook.com 도메인 Verified 후 발급)
+npx wrangler pages secret put RESEND_API_KEY --project-name mediabaekmook
+```
+- 받는 주소 기본값: `izamaoi@naver.com`, `izamaoi999@gmail.com`. 바꾸려면 Pages 환경변수 `NOTIFY_EMAILS` (쉼표 구분)
+- 보내는 주소 기본값: `미디어백묵 예약알림 <noreply@mediabaekmook.com>`. 바꾸려면 `NOTIFY_FROM`
+- 메일 발송은 응답 후 백그라운드에서 하며, 실패해도 예약 접수는 성공합니다. 발송 성공 시 `reservations.notified_at` 에 기록
+- 발송 실패 확인: 대시보드 > mediabaekmook > Functions 실시간 로그, 또는
+  `npx wrangler d1 execute mediabaekmook-board --remote --command "SELECT reference, name, date, created_at FROM reservations WHERE notified_at IS NULL"`
+
+### 테스트
+```bash
+npm test                     # 요금 일치·일정 검증·메일 내용·직권 수정 로직
+```

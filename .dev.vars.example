@@ -1,1 +1,5 @@
 ADMIN_PASSWORD=change-me-local-only
+# 예약 알림 메일 (Resend). 로컬에서는 비워두면 메일 발송을 건너뜁니다.
+RESEND_API_KEY=
+# 받는 주소를 바꾸려면 쉼표로 구분 (비우면 izamaoi@naver.com, izamaoi999@gmail.com)
+NOTIFY_EMAILS=

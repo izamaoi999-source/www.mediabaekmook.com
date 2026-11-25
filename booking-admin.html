@@ -8,7 +8,7 @@
   <meta name="referrer" content="same-origin">
   <title>예약 관리 | 스튜디오 미디어백묵</title>
   <link rel="stylesheet" href="/css/style.css?v=20261123-booking">
-  <link rel="stylesheet" href="/css/booking-admin.css?v=20261123-sms">
+  <link rel="stylesheet" href="/css/booking-admin.css?v=20261125-admin">
 </head>
 <body class="booking-admin-page">
   <header class="site-header">
@@ -40,7 +40,7 @@
     </section>
 
     <section id="ba-workspace" hidden aria-label="예약 관리 화면">
-      <div class="ba-notice"><strong>확정 전 기존 예약표를 대조해 주세요.</strong><p>온라인 접수만으로 예약이 확정되지는 않습니다. 외부에서 받은 예약은 <a href="/#schedule" target="_blank" rel="noopener">기존 Google 예약표</a>와 확인한 후 확정해 주세요. 상태 변경은 고객에게 문자나 이메일을 자동 발송하지 않으며, 결제 완료도 의미하지 않습니다.</p></div>
+      <div class="ba-notice"><strong>확정 전 기존 예약표를 대조해 주세요.</strong><p>온라인 접수만으로 예약이 확정되지는 않습니다. 외부에서 받은 예약은 <a href="/#schedule" target="_blank" rel="noopener">기존 Google 예약표</a>와 확인한 후 확정해 주세요. 상태 변경·직권 수정·삭제는 고객에게 문자나 이메일을 자동 발송하지 않으며, 결제 완료도 의미하지 않습니다.</p></div>
 
       <form class="ba-filters" id="ba-filter-form">
         <label class="ba-field" for="ba-filter-status"><span>예약 상태</span><select id="ba-filter-status" name="status"><option value="requested">접수 대기</option><option value="confirmed">예약 확정</option><option value="completed">이용 완료</option><option value="cancelled">취소</option><option value="">전체 상태</option></select></label>
@@ -78,13 +78,40 @@
             </section>
 
             <form id="ba-update-form">
-              <label class="ba-field" for="ba-status"><span>변경할 상태</span><select id="ba-status" name="status" required></select></label>
+              <fieldset class="ba-edit" id="ba-edit">
+                <legend>예약 내용 수정 <small>관리자 직권 · 저장하면 예상 견적도 다시 계산됩니다</small></legend>
+                <div class="ba-edit-grid">
+                  <label class="ba-field" for="ba-edit-date"><span>이용 날짜</span><input id="ba-edit-date" type="date" required></label>
+                  <label class="ba-field" for="ba-edit-start"><span>시작 시간</span><select id="ba-edit-start" required></select></label>
+                  <label class="ba-field" for="ba-edit-duration"><span>이용 시간</span><select id="ba-edit-duration" required></select></label>
+                  <label class="ba-field" for="ba-edit-people"><span>인원</span><select id="ba-edit-people" required></select></label>
+                  <label class="ba-field" for="ba-edit-name"><span>예약자</span><input id="ba-edit-name" maxlength="30" required autocomplete="off"></label>
+                  <label class="ba-field" for="ba-edit-contact"><span>연락처</span><input id="ba-edit-contact" maxlength="100" required autocomplete="off"></label>
+                  <label class="ba-field" for="ba-edit-type"><span>촬영 방식</span><select id="ba-edit-type"><option value="ppt">PPT·PC 강의</option><option value="board">칠판·전자칠판</option><option value="chromakey">크로마키</option><option value="other">기타</option></select></label>
+                  <label class="ba-check" for="ba-edit-assist"><input id="ba-edit-assist" type="checkbox"><span>촬영대행 요청</span></label>
+                </div>
+                <label class="ba-field" for="ba-edit-notes"><span>고객 요청사항 <small>고객 예약 조회에도 표시됩니다.</small></span><textarea id="ba-edit-notes" rows="3" maxlength="2000"></textarea></label>
+                <p class="ba-edit-estimate" id="ba-edit-estimate" aria-live="polite"></p>
+              </fieldset>
+              <label class="ba-field" for="ba-status"><span>변경할 상태 <small>관리자는 모든 상태로 바꿀 수 있습니다.</small></span><select id="ba-status" name="status" required></select></label>
               <div class="ba-confirm-check" id="ba-confirm-check" hidden><label><input id="ba-calendar-checked" type="checkbox"><span>기존 예약표와 촬영 지원 가능 여부를 확인했습니다.</span></label><p>공휴일 요금·최종 견적·결제 안내는 고객과 별도로 확인해 주세요.</p></div>
               <label class="ba-field" for="ba-admin-note"><span>내부 메모 <small>고객 예약 조회에 표시되지 않습니다.</small></span><textarea id="ba-admin-note" name="admin_note" rows="5" maxlength="2000" placeholder="고객 연락, 일정 대조, 최종 견적 안내 등 운영 내용을 기록하세요."></textarea></label>
+              <label class="ba-check ba-force" for="ba-force"><input id="ba-force" type="checkbox"><span>제한 무시 <small>영업시간·최소 이용시간·인원 제한과 확정 예약 중복 검사를 건너뛰고 저장합니다.</small></span></label>
               <p class="ba-message" id="ba-detail-message" role="alert" hidden></p>
-              <button class="btn btn-primary" id="ba-save" type="submit">변경 저장</button>
+              <div class="ba-save-row"><button class="btn btn-primary" id="ba-save" type="submit">변경 저장</button><button class="btn btn-ghost" id="ba-edit-reset" type="button">수정 취소</button></div>
               <p class="ba-updated" id="ba-updated"></p>
             </form>
+
+            <section class="ba-delete" aria-labelledby="ba-delete-title">
+              <h3 id="ba-delete-title">예약 삭제</h3>
+              <p>삭제한 예약은 되돌릴 수 없고, 고객도 더 이상 조회할 수 없습니다. 기록을 남기려면 삭제 대신 '취소' 상태로 바꾸세요.</p>
+              <button class="btn btn-danger" type="button" id="ba-delete-open">이 예약 삭제</button>
+              <form id="ba-delete-form" hidden>
+                <label class="ba-field" for="ba-delete-reference"><span>확인을 위해 예약번호 <strong id="ba-delete-expected"></strong> 를 입력하세요</span><input id="ba-delete-reference" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="80"></label>
+                <div class="ba-save-row"><button class="btn btn-danger" type="submit" id="ba-delete-submit" disabled>영구 삭제</button><button class="btn btn-ghost" type="button" id="ba-delete-cancel">취소</button></div>
+              </form>
+              <p class="ba-message" id="ba-delete-message" role="alert" hidden></p>
+            </section>
           </div>
         </section>
       </div>
@@ -96,6 +123,6 @@
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/config.js?v=20261123-booking"></script>
   <script src="/js/main.js?v=20261123-booking"></script>
   <script src="/js/booking-sms.js?v=20261123-sms"></script>
-  <script src="/js/booking-admin.js?v=20261123-sms"></script>
+  <script src="/js/booking-admin.js?v=20261125-admin"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@ const out = join(root, "dist");
 
 // 루트 기준 제외 목록
 const EXCLUDE_TOP = new Set([
-  "dist", "node_modules", "functions", "lib", "scripts", "_archive_old", ".wrangler", ".git",
+  "dist", "node_modules", "functions", "lib", "scripts", "test", "_archive_old", ".wrangler", ".git",
   "README.md", "DEPLOY.md", "schema.sql", "seed-equipment.sql", "wrangler.toml", "package.json", "package-lock.json",
   "preview.png", ".dev.vars", ".dev.vars.example", ".gitignore",
 ]);

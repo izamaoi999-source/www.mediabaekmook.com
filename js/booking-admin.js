@@ -4,7 +4,8 @@
   var ADMIN_KEY = "mbm-admin-pw";
   var labels = { requested: "접수 대기", confirmed: "예약 확정", completed: "이용 완료", cancelled: "취소" };
   var shootLabels = { ppt: "PPT·PC 강의", board: "칠판·전자칠판", chromakey: "크로마키", other: "기타" };
-  var transitions = { requested: ["confirmed", "cancelled"], confirmed: ["completed", "cancelled"], cancelled: ["requested"], completed: [] };
+  // 관리자 직권: 모든 상태로 변경 가능
+  var statusOrder = ["requested", "confirmed", "completed", "cancelled"];
   var state = { authenticated: false, password: "", bookings: [], current: null, page: 1, loading: false, saving: false, generation: 0 };
   var $ = function (id) { return document.getElementById(id); };
 
@@ -32,6 +33,10 @@
     $("ba-admin-note").value = "";
     $("ba-calendar-checked").checked = false;
     $("ba-confirm-check").hidden = true;
+    $("ba-force").checked = false;
+    ["ba-edit-date", "ba-edit-name", "ba-edit-contact", "ba-edit-notes"].forEach(function (id) { $(id).value = ""; });
+    $("ba-edit-estimate").textContent = "";
+    closeDelete();
     message("ba-detail-message", "");
     $("ba-sms-phone").value = "";
     $("ba-sms-text").value = "";
@@ -76,6 +81,10 @@
     $("ba-list").querySelectorAll("button").forEach(function (el) { el.disabled = busy; });
     $("ba-pager").querySelectorAll("button").forEach(function (el) { el.disabled = busy || el.dataset.pageDisabled === "true"; });
     $("ba-update-form").querySelectorAll("input, select, textarea, button").forEach(function (el) { el.disabled = busy; });
+    $("ba-delete-open").disabled = busy;
+    $("ba-delete-reference").disabled = busy;
+    $("ba-delete-cancel").disabled = busy;
+    $("ba-delete-submit").disabled = busy || !deleteMatches();
     $("ba-sms-phone").disabled = busy;
     $("ba-sms-text").disabled = busy;
     $("ba-sms-copy").disabled = busy;
@@ -121,9 +130,10 @@
     var estimate = booking.estimate || {}, lines = $("ba-estimate-lines"); lines.textContent = "";
     [["공급가액", estimate.subtotal], ["부가가치세", estimate.vat], ["예상 합계", estimate.total]].forEach(function (row) { lines.appendChild(element("dt", "", row[0])); lines.appendChild(element("dd", "", money(row[1]))); });
     var status = $("ba-status"); status.textContent = "";
-    var allowed = [booking.status].concat(transitions[booking.status] || []);
-    allowed.forEach(function (value) { var option = element("option", "", labels[value] + (value === booking.status ? " · 현재 상태 유지" : "")); option.value = value; status.appendChild(option); });
+    statusOrder.forEach(function (value) { var option = element("option", "", labels[value] + (value === booking.status ? " · 현재 상태 유지" : "")); option.value = value; status.appendChild(option); });
     status.value = booking.status;
+    fillEdit(booking);
+    closeDelete();
     $("ba-admin-note").value = booking.admin_note || "";
     $("ba-calendar-checked").checked = false;
     $("ba-updated").textContent = "마지막 변경: " + dateTime(booking.updated_at);
@@ -132,6 +142,92 @@
     $("ba-list").querySelectorAll(".ba-booking-card").forEach(function (button, index) { button.setAttribute("aria-pressed", state.bookings[index].id === booking.id ? "true" : "false"); });
     if (focus) $("ba-person-title").focus({ preventScroll: false });
   }
+  // ── 직권 수정 ──
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function fillSelect(select, values, current, label) {
+    select.textContent = "";
+    var list = values.slice();
+    if (current !== "" && current !== null && current !== undefined && list.indexOf(current) === -1) list.push(current);
+    list.sort(function (a, b) { return String(a).localeCompare(String(b), "en", { numeric: true }); });
+    list.forEach(function (value) { var option = element("option", "", label(value)); option.value = String(value); select.appendChild(option); });
+    select.value = String(current);
+  }
+  function range(from, to) { var out = []; for (var i = from; i <= to; i++) out.push(i); return out; }
+  function fillEdit(booking) {
+    $("ba-edit-date").value = booking.date || "";
+    fillSelect($("ba-edit-start"), range(6, 22).map(function (h) { return pad(h) + ":00"; }), booking.start_time || "", function (v) { return v; });
+    fillSelect($("ba-edit-duration"), range(1, 14), Number(booking.duration) || 2, function (v) { return v + "시간"; });
+    fillSelect($("ba-edit-people"), range(1, 10), Number(booking.people) || 1, function (v) { return v + "명"; });
+    $("ba-edit-name").value = booking.name || "";
+    $("ba-edit-contact").value = booking.contact || "";
+    $("ba-edit-type").value = Object.prototype.hasOwnProperty.call(shootLabels, booking.shoot_type) ? booking.shoot_type : "other";
+    $("ba-edit-assist").checked = !!booking.assist;
+    $("ba-edit-notes").value = booking.notes || "";
+    $("ba-force").checked = false;
+    updateEstimatePreview();
+  }
+  function editValues() {
+    return {
+      date: $("ba-edit-date").value, start_time: $("ba-edit-start").value, duration: Number($("ba-edit-duration").value),
+      people: Number($("ba-edit-people").value), name: $("ba-edit-name").value.trim(), contact: $("ba-edit-contact").value.trim(),
+      shoot_type: $("ba-edit-type").value, assist: $("ba-edit-assist").checked, notes: $("ba-edit-notes").value.trim()
+    };
+  }
+  function scheduleText(v) {
+    var h = Number(String(v.start_time).slice(0, 2));
+    return v.date + " " + v.start_time + "–" + pad(h + v.duration) + ":00 · " + v.duration + "시간";
+  }
+  function updateEstimatePreview() {
+    var el = $("ba-edit-estimate");
+    if (!state.current) { el.textContent = ""; return; }
+    var v = editValues(), cur = state.current;
+    var changed = v.date !== cur.date || v.duration !== cur.duration || v.assist !== !!cur.assist;
+    if (!changed) { el.textContent = ""; return; }
+    var site = window.SITE || {}, studio = (site.studios || {}).bangbae || {}, addon = ((site.addons || {}).producerAssist || {});
+    var day = new Date(v.date + "T12:00:00Z").getUTCDay();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.date) || !Number.isFinite(day)) { el.textContent = ""; return; }
+    var rate = day === 0 || day === 6 ? studio.pricePerHourWeekend : studio.pricePerHour;
+    if (!rate) { el.textContent = "저장하면 예상 견적이 다시 계산됩니다."; return; }
+    var subtotal = rate * v.duration + (v.assist ? (addon.pricePerHour || 0) * v.duration : 0);
+    el.textContent = "저장 시 예상 합계: " + money(subtotal + Math.round(subtotal * .1)) + " (VAT 포함, 기존 " + money((cur.estimate || {}).total) + ")";
+  }
+  ["ba-edit-date", "ba-edit-start", "ba-edit-duration", "ba-edit-people", "ba-edit-assist"].forEach(function (id) { $(id).addEventListener("change", function () { updateEstimatePreview(); message("ba-detail-message", ""); }); });
+  $("ba-edit-reset").addEventListener("click", function () { if (state.current && !state.saving) { fillEdit(state.current); $("ba-status").value = state.current.status; $("ba-admin-note").value = state.current.admin_note || ""; updateConfirmCheck(); message("ba-detail-message", ""); } });
+
+  // ── 삭제 ──
+  function deleteMatches() { return !!state.current && $("ba-delete-reference").value.trim().toUpperCase() === String(state.current.reference || "").toUpperCase(); }
+  function closeDelete() {
+    $("ba-delete-form").hidden = true; $("ba-delete-open").hidden = false;
+    $("ba-delete-reference").value = ""; $("ba-delete-submit").disabled = true;
+    message("ba-delete-message", "");
+  }
+  $("ba-delete-open").addEventListener("click", function () {
+    if (!state.current || state.saving || state.loading) return;
+    $("ba-delete-expected").textContent = state.current.reference;
+    $("ba-delete-form").hidden = false; $("ba-delete-open").hidden = true;
+    $("ba-delete-reference").focus();
+  });
+  $("ba-delete-cancel").addEventListener("click", function () { closeDelete(); $("ba-delete-open").focus(); });
+  $("ba-delete-reference").addEventListener("input", function () { $("ba-delete-submit").disabled = !deleteMatches(); });
+  $("ba-delete-form").addEventListener("submit", async function (event) {
+    event.preventDefault();
+    if (!state.current || state.saving || state.loading || !state.authenticated || !deleteMatches()) return;
+    var booking = state.current, generation = state.generation;
+    if (!window.confirm(booking.reference + " (" + (booking.name || "") + " 님) 예약을 영구 삭제합니다. 계속할까요?")) return;
+    state.saving = true; setBusy(true); message("ba-delete-message", "삭제하고 있습니다.");
+    try {
+      await api("/api/bookings/" + encodeURIComponent(booking.id), { method: "DELETE", body: { reference: booking.reference, version: booking.version } });
+      if (!state.authenticated || generation !== state.generation) return;
+      state.saving = false; state.current = null;
+      await loadList(state.page, { text: booking.reference + " 예약을 삭제했습니다.", error: false });
+    } catch (error) {
+      if (!state.authenticated || generation !== state.generation) return;
+      if (error.status === 401 || error.status === 403) { showLogin("관리자 인증이 만료되었거나 올바르지 않습니다. 다시 로그인해 주세요."); return; }
+      if (error.status === 409) { state.saving = false; await loadList(state.page, { text: error.message, error: true }); }
+      else message("ba-delete-message", error.message, true);
+    } finally { state.saving = false; if (state.authenticated && !state.loading) setBusy(false); }
+  });
+
   function updateConfirmCheck() { $("ba-confirm-check").hidden = !state.current || $("ba-status").value !== "confirmed" || state.current.status === "confirmed"; }
   function updateSmsLink() {
     var link = $("ba-sms-open");
@@ -227,18 +323,24 @@
     if (!state.current || state.saving || state.loading || !state.authenticated) return;
     var booking = state.current, targetStatus = $("ba-status").value;
     if (targetStatus === "confirmed" && booking.status !== "confirmed" && !$("ba-calendar-checked").checked) { message("ba-detail-message", "기존 예약표와 촬영 지원 가능 여부를 확인한 뒤 체크해 주세요.", true); $("ba-calendar-checked").focus(); return; }
+    var edit = editValues();
+    if (!edit.date || !edit.start_time || !edit.name || !edit.contact) { message("ba-detail-message", "날짜·시작 시간·예약자·연락처를 입력해 주세요.", true); return; }
+    var scheduleChanged = edit.date !== booking.date || edit.start_time !== booking.start_time || edit.duration !== booking.duration;
+    if (scheduleChanged && !window.confirm("일정을 변경합니다.\n변경 전: " + scheduleText(booking) + "\n변경 후: " + scheduleText(edit) + "\n\n고객에게는 자동 안내되지 않으니 저장 후 문자로 알려 주세요.")) return;
+    var payload = Object.assign({ status: targetStatus, admin_note: $("ba-admin-note").value.trim(), version: booking.version, force: $("ba-force").checked }, edit);
     var generation = state.generation;
     state.saving = true; setBusy(true); message("ba-detail-message", "저장하고 있습니다.");
     try {
-      var data = await api("/api/bookings/" + encodeURIComponent(booking.id), { method: "PATCH", body: { status: targetStatus, admin_note: $("ba-admin-note").value.trim(), version: booking.version } });
+      var data = await api("/api/bookings/" + encodeURIComponent(booking.id), { method: "PATCH", body: payload });
       if (!state.authenticated || generation !== state.generation) return;
       if (!data.booking) throw new Error("저장 응답을 확인하지 못했습니다. 목록을 다시 조회해 주세요.");
       state.saving = false;
-      await loadList(state.page, { text: "예약 상태와 메모를 저장했습니다. 고객 안내와 결제 확인은 별도로 진행해 주세요.", error: false });
+      await loadList(state.page, { text: data.unchanged ? "변경된 내용이 없습니다." : "예약 변경을 저장했습니다." + (scheduleChanged ? " 일정이 바뀌었으니 고객에게 문자로 안내해 주세요." : " 고객 안내와 결제 확인은 별도로 진행해 주세요."), error: false });
     } catch (error) {
       if (!state.authenticated || generation !== state.generation) return;
       if (error.status === 401 || error.status === 403) { showLogin("관리자 인증이 만료되었거나 올바르지 않습니다. 다시 로그인해 주세요."); return; }
-      if (error.status === 409) { state.saving = false; await loadList(state.page, { text: error.message + " 최신 목록을 불러왔습니다. 예약을 다시 선택해 확인해 주세요.", error: true }); }
+      if (error.status === 409 && /제한 무시/.test(error.message)) { message("ba-detail-message", error.message, true); $("ba-force").focus(); }
+      else if (error.status === 409) { state.saving = false; await loadList(state.page, { text: error.message + " 최신 목록을 불러왔습니다. 예약을 다시 선택해 확인해 주세요.", error: true }); }
       else message("ba-detail-message", error.message, true);
     } finally { state.saving = false; if (state.authenticated && !state.loading) setBusy(false); }
   });
