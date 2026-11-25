@@ -6,6 +6,7 @@
     "dev": "node scripts/build.mjs && wrangler pages dev",
     "db:local": "wrangler d1 execute mediabaekmook-board --local --file=schema.sql",
     "deploy": "node scripts/build.mjs && wrangler pages deploy --project-name mediabaekmook --branch main",
+    "indexnow": "node scripts/indexnow.mjs",
     "test": "node --test test/*.test.mjs"
   },
   "devDependencies": {
