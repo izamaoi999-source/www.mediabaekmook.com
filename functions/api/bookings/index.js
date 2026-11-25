@@ -19,7 +19,7 @@ export async function onRequestPost(context) {
   if (input.studio !== BOOKING_STUDIO.id) return err("예약할 수 없는 지점입니다.");
   if (!input.name) return err("예약자 이름을 입력해 주세요.");
   if (!validContact(input.contact)) return err("연락받을 전화번호 또는 이메일을 입력해 주세요.");
-  if (input.password.length < 8 || input.password.length > 64) return err("비밀번호는 8자 이상 64자 이하로 입력해 주세요.");
+  if (input.password.length < 4 || input.password.length > 64) return err("비밀번호는 4자 이상 64자 이하로 입력해 주세요.");
   if (body.consent !== true) return err("개인정보 수집·이용에 동의해 주세요.");
   if (!input.request_id) return err("요청 정보가 올바르지 않습니다. 페이지를 새로고침한 뒤 다시 시도해 주세요.");
 
