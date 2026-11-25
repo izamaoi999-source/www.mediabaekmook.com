@@ -335,7 +335,7 @@
       if (!state.authenticated || generation !== state.generation) return;
       if (!data.booking) throw new Error("저장 응답을 확인하지 못했습니다. 목록을 다시 조회해 주세요.");
       state.saving = false;
-      await loadList(state.page, { text: data.unchanged ? "변경된 내용이 없습니다." : "예약 변경을 저장했습니다." + (scheduleChanged ? " 일정이 바뀌었으니 고객에게 문자로 안내해 주세요." : " 고객 안내와 결제 확인은 별도로 진행해 주세요."), error: false });
+      await loadList(state.page, { text: data.unchanged ? "변경된 내용이 없습니다." : "예약 변경을 저장했습니다." + (scheduleChanged ? " 일정이 바뀌었으니 고객에게 문자로 안내해 주세요." : " 고객 안내와 결제 확인은 별도로 진행해 주세요.") + (targetStatus === "confirmed" || targetStatus === "completed" || booking.status === "confirmed" || booking.status === "completed" ? " 구글 캘린더에는 10분 안에 자동 반영됩니다." : ""), error: false });
     } catch (error) {
       if (!state.authenticated || generation !== state.generation) return;
       if (error.status === 401 || error.status === 403) { showLogin("관리자 인증이 만료되었거나 올바르지 않습니다. 다시 로그인해 주세요."); return; }
