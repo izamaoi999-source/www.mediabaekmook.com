@@ -976,3 +976,21 @@ body { overflow-x: hidden; }
 .eq-summary dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .eq-summary-link { display: inline-block; margin-top: 0.8rem; font-weight: 700; }
 @media (max-width: 640px) { .eq-summary dl { grid-template-columns: minmax(0, 1fr); } }
+
+/* 맨 위 가격·영업시간 배너 (js/main.js) */
+.top-banner { background: #161a18; color: #fff; font-size: 0.95rem; line-height: 1.35; }
+.top-banner-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.35rem 1.25rem; padding-block: 0.55rem; }
+.tb-item { white-space: nowrap; font-weight: 700; }
+.tb-item b { display: inline-block; margin-right: 0.15rem; padding: 0.05rem 0.45rem; border-radius: 6px; font-size: 0.8rem; background: var(--b-green-dark); color: #fff; }
+.tb-item small { margin-left: 0.25rem; font-size: 0.75rem; font-weight: 400; color: #c9d1cd; }
+.tb-hours { font-size: 1.05rem; font-weight: 800; color: var(--b-yellow); }
+.tb-hours b { background: var(--b-yellow); color: #161a18; }
+.tb-cta { padding: 0.25rem 0.8rem; border-radius: 999px; background: #fff; color: #161a18; font-weight: 800; font-size: 0.85rem; text-decoration: none; }
+.tb-cta:hover { background: var(--b-yellow); color: #161a18; text-decoration: none; }
+@media (max-width: 640px) { .top-banner { font-size: 0.85rem; } .top-banner-inner { gap: 0.25rem 0.8rem; padding-block: 0.45rem; } .tb-hours { font-size: 0.95rem; } }
+
+/* 영업시간 강조 */
+.hours { font-size: 1.15rem; font-weight: 800; color: var(--text); }
+.hours strong { font-size: 0.9rem; padding: 0.1rem 0.55rem; vertical-align: 0.1em; }
+.chip-hours { background: var(--b-yellow); color: #161a18; font-weight: 800; font-size: 1rem; }
+.hours-em { font-size: 1.1em; font-weight: 800; color: var(--text); background: linear-gradient(transparent 60%, rgba(255, 209, 0, 0.55) 60%); }

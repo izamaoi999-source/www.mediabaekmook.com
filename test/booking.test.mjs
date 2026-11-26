@@ -32,7 +32,7 @@ test("일정 검증", () => {
   const base = { date: "2026-12-02", start_time: "10:00", duration: 2, people: 1 };
   assert.ok(!checkSchedule(base).error);
   assert.match(checkSchedule({ ...base, duration: 1 }).error, /최소/);
-  assert.match(checkSchedule({ ...base, start_time: "19:00" }).error, /영업시간/);
+  assert.match(checkSchedule({ ...base, start_time: "22:00" }).error, /영업시간/);
   assert.match(checkSchedule({ ...base, people: 3 }).error, /최대/);
   assert.ok(!checkSchedule({ ...base, start_time: "19:00", duration: 1, people: 3 }, { force: true }).error, "관리자 force");
   assert.match(checkSchedule({ ...base, date: "2026-02-30" }).error, /날짜/);

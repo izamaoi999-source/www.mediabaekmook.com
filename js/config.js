@@ -18,7 +18,7 @@ window.SITE = {
   pricePerHour: 40000,
   pricePerHourWeekend: 46000, // 토·일·공휴일 (평일 대비 15% 할증)
   minHours: 2,
-  businessHours: "오전 9시 ~ 오후 8시 · 점심시간 없음",
+  businessHours: "오전 9시 ~ 오후 11시 · 점심시간 없음",
   addons: {
     producerAssist: {
       name: "프로듀서 어시스트(촬영대행)",

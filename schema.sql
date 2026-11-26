@@ -89,3 +89,9 @@ CREATE TABLE IF NOT EXISTS reservations (
 );
 CREATE INDEX IF NOT EXISTS idx_reservations_day ON reservations(studio, date, status);
 CREATE INDEX IF NOT EXISTS idx_reservations_status ON reservations(status, date, start_time);
+
+-- 단순 카운터 (name='site-visits' = 총 방문자 수, functions/api/visits.js)
+CREATE TABLE IF NOT EXISTS counters (
+  name TEXT PRIMARY KEY,
+  value INTEGER NOT NULL DEFAULT 0
+);

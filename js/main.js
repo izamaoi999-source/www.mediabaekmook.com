@@ -61,6 +61,37 @@
     });
   }
 
+  // 맨 위 가격·영업시간 배너 (모든 공개 페이지, 예약 관리 페이지 제외). 값은 js/config.js
+  (function initTopBanner() {
+    if (document.querySelector(".top-banner") || document.body.classList.contains("booking-admin-page")) return;
+    var won = function (n) { return Number(n).toLocaleString("ko-KR") + "원"; };
+    var hours = String(site.businessHours || "").split("·")[0].trim();
+    var bar = document.createElement("div");
+    bar.className = "top-banner";
+    bar.setAttribute("role", "note");
+    bar.setAttribute("aria-label", "요금과 영업시간");
+    var inner = document.createElement("div");
+    inner.className = "container top-banner-inner";
+    var add = function (cls, label, text, small) {
+      var item = document.createElement("span");
+      item.className = "tb-item " + cls;
+      var b = document.createElement("b"); b.textContent = label; item.appendChild(b);
+      item.appendChild(document.createTextNode(" " + text));
+      if (small) { var s = document.createElement("small"); s.textContent = small; item.appendChild(s); }
+      inner.appendChild(item);
+    };
+    add("tb-price", "평일", won(site.pricePerHour || 40000) + "/시간");
+    add("tb-price", "토·일·공휴일", won(site.pricePerHourWeekend || 46000) + "/시간", "(VAT 별도)");
+    if (hours) add("tb-hours", "영업시간", hours);
+    if (!/\/booking$/.test(location.pathname)) {
+      var a = document.createElement("a");
+      a.className = "tb-cta"; a.href = "/booking"; a.textContent = "온라인 예약";
+      inner.appendChild(a);
+    }
+    bar.appendChild(inner);
+    document.body.insertBefore(bar, document.body.firstChild);
+  })();
+
   // 연도
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = String(new Date().getFullYear());
@@ -80,11 +111,8 @@
     try {
       already = sessionStorage.getItem("mbm-visit-counted") === "1";
     } catch (e) {}
-    var base = "https://abacus.jasoncameron.dev/";
-    var path = already
-      ? "get/mediabaekmook/site-visits"
-      : "hit/mediabaekmook/site-visits";
-    fetch(base + path)
+    // 자체 카운터(D1). 예전 abacus 카운터 값(2026-11-26)을 이어받음
+    fetch("/api/visits", { method: already ? "GET" : "POST", cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("bad status");
         return res.json();
