@@ -14,6 +14,8 @@ window.SITE = {
   siteUrl: "https://mediabaekmook.com",
   telephone: "010-2928-6068",
   email: "izamaoi@naver.com",
+  // 네이버 지도(홈 오시는 길). 네이버 클라우드 플랫폼 Maps 앱의 Client ID — 비우면 주소 카드+네이버 지도 링크만 표시
+  naverMapKeyId: "",
   // 현재 예약 가능한 지점(방배점) 기본 요금
   pricePerHour: 40000,
   pricePerHourWeekend: 46000, // 토·일·공휴일 (평일 대비 15% 할증)
@@ -61,13 +63,13 @@ window.SITE = {
       comingSoon: true,
       area: null,
       maxPeople: null,
-      address: "서울 종로구 연건동 (오픈 예정)",
-      addressShort: "서울 종로구 연건동",
+      address: "서울 종로구 율곡로13길 21 (오픈 예정)",
+      addressShort: "서울 종로구 율곡로13길 21",
       parking: "",
-      naverMapUrl: "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EC%A2%85%EB%A1%9C%EA%B5%AC%20%EC%97%B0%EA%B1%B4%EB%8F%99",
+      naverMapUrl: "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EC%A2%85%EB%A1%9C%EA%B5%AC%20%EC%9C%A8%EA%B3%A1%EB%A1%9C13%EA%B8%B8%2021",
       bookingUrl: "",
       latpeedUrl: "",
-      geo: null,
+      geo: { lat: "37.57671", lng: "126.99992" },
       images: []
     }
   }

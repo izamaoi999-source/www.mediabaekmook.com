@@ -994,3 +994,18 @@ body { overflow-x: hidden; }
 .hours strong { font-size: 0.9rem; padding: 0.1rem 0.55rem; vertical-align: 0.1em; }
 .chip-hours { background: var(--b-yellow); color: #161a18; font-weight: 800; font-size: 1rem; }
 .hours-em { font-size: 1.1em; font-weight: 800; color: var(--text); background: linear-gradient(transparent 60%, rgba(255, 209, 0, 0.55) 60%); }
+
+/* 홈 '오시는 길' 지도 (js/maps.js) */
+@media (min-width: 720px) { .map-grid { grid-template-columns: 1fr 1fr; } }
+.map-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+.map-head h3 { margin: 0; }
+.map-box { position: relative; height: 300px; border-radius: 10px; overflow: hidden; background: var(--bg-soft); border: 1px solid var(--border); }
+.map-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; padding: 1rem; text-align: center; color: var(--text); text-decoration: none;
+  background: repeating-linear-gradient(0deg, transparent 0 39px, rgba(0,0,0,0.04) 39px 40px), repeating-linear-gradient(90deg, transparent 0 39px, rgba(0,0,0,0.04) 39px 40px), #eef3ef; }
+.map-fallback:hover { text-decoration: none; background-color: #e3ece6; }
+.map-pin { font-size: 2rem; line-height: 1; }
+.map-fallback strong { font-size: 1.1rem; }
+.map-fallback span { font-size: 0.9rem; color: var(--muted); }
+.map-fallback .map-open { margin-top: 0.4rem; font-weight: 800; color: #03C75A; }
+.map-addr { margin: 0.75rem 0 0; font-size: 0.92rem; }
+@media (max-width: 640px) { .map-box { height: 240px; } }
